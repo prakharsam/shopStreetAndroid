@@ -11,6 +11,19 @@ public class ProductDto {
     private String productMerchantName;
     private int merchantCount;
 
+    @Override
+    public String toString() {
+        return "ProductDto{" +
+                "productID=" + productID +
+                ", productName='" + productName + '\'' +
+                ", productImgUrl='" + productImgUrl + '\'' +
+                ", productPrice=" + productPrice +
+                ", merchantID=" + merchantID +
+                ", productMerchantName='" + productMerchantName + '\'' +
+                ", merchantCount=" + merchantCount +
+                '}';
+    }
+
     public ProductDto() {
     }
 

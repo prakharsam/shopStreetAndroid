@@ -46,23 +46,24 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Long productID = productDto.getProductID();
                 String productName=productDto.getProductName();
                 String ImgUrl=productDto.getProductImgUrl();
                 String merchantName=productDto.getMerchantName();
-                double price=productDto.getProductPrice();
+                Double price=productDto.getProductPrice();
                 Long merchantID=productDto.getMerchantID();
 
 
-                Intent productDisplay = new Intent(holder.parent.getContext(), ProductDetailActivity.class);
-                productDisplay.putExtra("productID", productID);
-                productDisplay.putExtra("productName",productName);
-                productDisplay.putExtra("merchantName",merchantName);
-                productDisplay.putExtra("productPrice",price);
-                productDisplay.putExtra("ImgUrl",ImgUrl);
-                productDisplay.putExtra("merchantID",merchantID);
+                Intent intent = new Intent(holder.parent.getContext(), ProductDetailActivity.class);
+                intent.putExtra("productID", productID);
+                intent.putExtra("productName",productName);
+                intent.putExtra("merchantName",merchantName);
+                intent.putExtra("productPrice",price);
+                intent.putExtra("ImgUrl",ImgUrl);
+                intent.putExtra("merchantID",merchantID);
 
-                holder.parent.getContext().startActivity(productDisplay);
+                holder.parent.getContext().startActivity(intent);
             }
         });
 

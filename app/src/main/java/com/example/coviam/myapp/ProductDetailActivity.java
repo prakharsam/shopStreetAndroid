@@ -106,17 +106,18 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
 
                     Glide.with(ProductDetailActivity.this).load(response.body().getProductImgUrl()).into(imageView);
                 }
-                else if(response.body()==null){
-                    textViewName.setText(productName);
-                    textViewPrice.setText(String.valueOf(price));
-                    merchantName.setText(merchantname);
-                    Glide.with(ProductDetailActivity.this).load(imgUrl).into(imageView);
-                }
+
+
             }
 
             @Override
             public void onFailure(Call<ProductDto> call, Throwable t) {
-                Toast.makeText(ProductDetailActivity.this, "No description to display", Toast.LENGTH_LONG).show();
+
+                textViewName.setText(productName);
+                textViewPrice.setText(String.valueOf(price));
+                merchantName.setText(merchantname);
+                Glide.with(ProductDetailActivity.this).load(imgUrl).into(imageView);
+
             }
         });
 

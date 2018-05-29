@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coviam.myapp.Adapter.CategoryAdapter;
@@ -51,7 +52,8 @@ public class ProductListActivity extends AppCompatActivity {
 
         String name = intent.getStringExtra("searchName");
         boolvariable = intent.getBooleanExtra("isSearch", false);
-
+        TextView text=findViewById(R.id.searchEditText);
+        text.setText(name);
         productadapter = new ProductAdapter(this, productlist);
         recyclerview.setAdapter(productadapter);
         mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -68,12 +70,13 @@ public class ProductListActivity extends AppCompatActivity {
                     for (int i = 0 ; i < response.body().size() ; i++) {
                         com.example.coviam.myapp.Model.ProductDto existingProductDto = response.body().get(i);
                         ProductDto productDto = new ProductDto();
-                        productDto.setProductID(existingProductDto.getProductID());
-                        productDto.setProductName(existingProductDto.getProductName());
-                        productDto.setProductImgUrl(existingProductDto.getProductImgUrl());
                         productDto.setProductPrice(existingProductDto.getProductPrice());
+                        productDto.setProductImgUrl(existingProductDto.getProductImgUrl());
+                        productDto.setProductName(existingProductDto.getProductName());
+                        productDto.setProductID(existingProductDto.getProductID());
+                        productDto.setMerchantName(existingProductDto.getProductMerchantName());
+                        System.out.println((productDto.toString()));
                         productlist.add(productDto);
-//                        productDto.setProductPrice(existingProductDto.getPric);
                     }
                     productadapter.notifyDataSetChanged();
                     Toast.makeText(ProductListActivity.this, "Got Products For Searchword", Toast.LENGTH_LONG).show();
