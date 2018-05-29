@@ -213,6 +213,11 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
             //TODO handle click
             return true;
         }
+        else if(id== R.id.action_home) {
+            Intent displayByCategory = new Intent(CartPageActivity.this, DisplayByCategory.class);
+            startActivity(displayByCategory);
+            return true;
+        }
 
         return super.onOptionsItemSelected(item);
     }

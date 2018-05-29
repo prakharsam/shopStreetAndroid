@@ -37,11 +37,11 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
     //IProductAPI mIProductAPI;
 
     Long productID;
+    ProjectAPI projectApi ,projectApi1;
     String merchantname,imgUrl,productName;
     Long merchantId;
     Double price;
 
-    ProjectAPI projectApi;
     ProductDto productDto = new ProductDto();
     MerchantDto merchantDto;
     ImageView imageView;
@@ -65,13 +65,13 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
 
         Button addcart = findViewById(R.id.bt_cart);
         Button buynow = findViewById(R.id.bt_buynow);
-        Button addtocart=findViewById(R.id.bt_addtocart);
+        Button addtocart = findViewById(R.id.bt_addtocart);
         final TextView textViewName = findViewById(R.id.name_tag);
         final TextView textViewPrice = findViewById(R.id.price_tag);
         final TextView description = findViewById(R.id.description_tag);
         final ImageView imageView = findViewById(R.id.product_image);
         final TextView merchantName = findViewById(R.id.merchant_name_tag);
-        final EditText quantityEntry = findViewById(R.id.quantity_tag2);
+        quantityEntry = findViewById(R.id.quantity_tag2);
 
 
         merchantAdapter = new MerchantAdapter(merchantlist, this);
@@ -88,6 +88,13 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         userCall.enqueue(new Callback<ProductDto>() {
             @Override
             public void onResponse(Call<ProductDto> call, Response<ProductDto> response) {
+
+//                textViewName.setText("NAME:" + response.body().getProductName());
+//                productDto.setProductID(response.body().getProductID());
+
+//                productDto.setProductName(response.body().getProductName());
+
+//                textViewPrice.setText("PRICE:" + response.body().getProductPrice() + "");
                 if(response.body()!=null) {
                     textViewName.setText("NAME:" + response.body().getProductName());
                     productDto.setProductID(response.body().getProductID());
@@ -100,6 +107,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
 
                     description.setText(response.body().getProductDescription());
 
+//                merchantName.setText("MERCHANT:" + response.body().getMerchantName());
                     productDto.setMerchantID(response.body().getMerchantID());
 
                     merchantName.setText("MERCHANT:" + response.body().getMerchantName());
@@ -137,7 +145,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         });
 
 
-        addcart.setOnClickListener(new View.OnClickListener() {
+        buynow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = getIntent();
@@ -160,38 +168,16 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
             }
         });
 
-//        addtocart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent intent = getIntent();
-//
-//                intent.putExtra("pid", productID);
-//
-//                intent.putExtra("mid", productDto.getMerchantID());
-//
-//                System.out.println("QTY" + quantityEntry.getText().toString());
-//
-//                intent.putExtra("qty", quantityEntry.getText().toString());
-//
-//
-//                intent.putExtra("price", productDto.getProductPrice());
-//
-//
-//                projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
-//                addToCart();
-//
-//            }
-//        });
 
-//        buynow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
-//                addToCart();
-//            }
-//        });
+
+        addcart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
+                addToCart1();
+            }
+       });
 
     }
 
@@ -264,5 +250,49 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
 //        });
     }
 
+    private void addToCart1() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
 
+        SharedPreferences preferences = getSharedPreferences("userData", MODE_PRIVATE);
+        Long userid = preferences.getLong("id", -1);
+
+
+        String quantity = quantityEntry.getText().toString();
+
+        long qty;
+        if (!quantity.equals("")) {
+            qty = Long.parseLong(quantity);
+        } else {
+            qty = 1;
+        }
+
+
+        Call<CartResponseDTO> call = projectApi.addToCartApi(new CartData(userid, this.productID, qty, this.merchantId, this.price));
+        call.enqueue(new Callback<CartResponseDTO>() {
+            @Override
+            public void onResponse(Call<CartResponseDTO> call, Response<CartResponseDTO> response) {
+                if (response.body().getSuccess()) {
+                    progressDialog.dismiss();
+
+
+                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CartResponseDTO> call, Throwable t) {
+                progressDialog.dismiss();
+            }
+        });
+
+    }
+
+    @Override
+    public void addtocartfromadapter() {
+        addToCart1();
+    }
 }

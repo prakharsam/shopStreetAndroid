@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -70,6 +71,12 @@ public class ProductListActivity extends AppCompatActivity {
                     for (int i = 0 ; i < response.body().size() ; i++) {
                         com.example.coviam.myapp.Model.ProductDto existingProductDto = response.body().get(i);
                         ProductDto productDto = new ProductDto();
+                        if(response.body()==null){
+                            Toast.makeText(ProductListActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+
+
+                        }
+                        else{
                         productDto.setProductPrice(existingProductDto.getProductPrice());
                         productDto.setProductImgUrl(existingProductDto.getProductImgUrl());
                         productDto.setProductName(existingProductDto.getProductName());
@@ -77,7 +84,7 @@ public class ProductListActivity extends AppCompatActivity {
                         productDto.setMerchantName(existingProductDto.getProductMerchantName());
                         System.out.println((productDto.toString()));
                         productlist.add(productDto);
-                    }
+                    }}
                     productadapter.notifyDataSetChanged();
                     Toast.makeText(ProductListActivity.this, "Got Products For Searchword", Toast.LENGTH_LONG).show();
                 }
@@ -136,11 +143,26 @@ public class ProductListActivity extends AppCompatActivity {
             startActivity(displayByCategory);
             //Toast.makeText(ProductListActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
             return true;
-        } else if (id == R.id.action_search) {
-            //TODO handle search click
-
+        }
+        else if (id == R.id.action_search) {
+            Intent intent = new Intent(ProductListActivity.this, ProductListActivity.class);
+            ;
+            intent.putExtra("isSearch", true);
+            intent.putExtra("searchName", ((EditText) findViewById(R.id.searchEditText)).getText().toString());
+            startActivity(intent);
             Toast.makeText(ProductListActivity.this, "Action searched clicked", Toast.LENGTH_LONG).show();
 
+        }
+        else if (id == R.id.action_logout) {
+            SharedPreferences.Editor editors = getSharedPreferences("userData", MODE_PRIVATE).edit();
+            editors.clear();
+            editors.apply();
+            Intent intent = new Intent(ProductListActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }else if(id== R.id.action_home) {
+            Intent displayByCategory = new Intent(ProductListActivity.this, DisplayByCategory.class);
+            startActivity(displayByCategory);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);

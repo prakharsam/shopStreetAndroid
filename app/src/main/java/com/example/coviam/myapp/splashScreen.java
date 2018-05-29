@@ -18,7 +18,7 @@ public class splashScreen extends Activity {
             {
                 try
                 {
-                    sleep(5000);
+                    sleep(3000);
                     Intent i =new Intent(splashScreen.this,DisplayByCategory.class);
                     startActivity(i);
                     finish();

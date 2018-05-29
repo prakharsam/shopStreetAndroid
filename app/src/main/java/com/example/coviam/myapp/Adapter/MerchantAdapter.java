@@ -10,15 +10,17 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
+import com.example.coviam.myapp.LoginController;
 import com.example.coviam.myapp.Model.MerchantDto;
 import com.example.coviam.myapp.ProductDetailActivity;
+import com.example.coviam.myapp.ProjectAPI;
 import com.example.coviam.myapp.R;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-public class MerchantAdapter extends RecyclerView.Adapter<MerchantAdapter.ViewHolder>{
+public class MerchantAdapter extends RecyclerView.Adapter<MerchantAdapter.ViewHolder>  {
         private List<MerchantDto> mMerchant;
         private IAdapterCommunicator iAdapterCommunicator;
 
@@ -45,6 +47,12 @@ public class MerchantAdapter extends RecyclerView.Adapter<MerchantAdapter.ViewHo
             holder.price.setText(merchantDto.getProductPrice()+"");
             holder.quantity.setText(merchantDto.getProductStock()+"");
             holder.rating.setText(merchantDto.getWeightedFactor()+"");
+            holder.btaddtocart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   iAdapterCommunicator.addtocartfromadapter();
+                }
+            });
 
             }
 
@@ -54,7 +62,13 @@ public class MerchantAdapter extends RecyclerView.Adapter<MerchantAdapter.ViewHo
             return mMerchant.size();
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder {
+
+
+    public static interface IAdapterCommunicator {
+        void addtocartfromadapter();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
             
             Button btaddtocart;
             TextView merchantName;
@@ -75,9 +89,7 @@ public class MerchantAdapter extends RecyclerView.Adapter<MerchantAdapter.ViewHo
             }
         }
 
-        public static interface IAdapterCommunicator {
-            //void deleteItem(int position);
-        }
+
     }
 
 

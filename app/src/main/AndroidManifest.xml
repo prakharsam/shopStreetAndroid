@@ -27,12 +27,9 @@
         </activity>
         <activity android:name=".ProductDetailActivity" />
         <activity android:name=".Main2Activity" />
-        <activity android:name=".DisplayByCategory">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".DisplayByCategory"
+            android:noHistory="true">
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

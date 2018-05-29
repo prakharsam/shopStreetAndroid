@@ -3,6 +3,7 @@ package com.example.coviam.myapp;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.design.widget.TextInputEditText;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -21,7 +22,8 @@ public class SignupActivity extends AppCompatActivity {
     private EditText nameEditText;
     private EditText userName;
     private EditText email;
-    private EditText password;
+    private TextInputEditText password;
+    private TextInputEditText confirmPassword;
     private EditText address;
 
     @Override
@@ -36,6 +38,7 @@ public class SignupActivity extends AppCompatActivity {
         email = findViewById(R.id.et_email);
         password = findViewById(R.id.et_password);
         address = findViewById(R.id.et_address);
+        confirmPassword=findViewById(R.id.et_confirmpassword);
 
 
         projectApi = LoginController.getInstance().getLoginClient().create(ProjectAPI.class);
@@ -43,34 +46,42 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                if(userName.getText().toString().length()!=0 & userName.getText().toString().length()<20 & email.getText().toString().length()!=0) {
-                    Call<ResponseFromUser> userCall = projectApi.addUser(new User(userName.getText().toString(), password.getText().toString(), email.getText().toString(), address.getText().toString(), nameEditText.getText().toString()));
-                    userCall.enqueue(new Callback<ResponseFromUser>() {
-                        @Override
-                        public void onResponse(Call<ResponseFromUser> call, Response<ResponseFromUser> response) {
-                            if (response.body().isResponse() == true) {
-                                //edit
-                                SharedPreferences.Editor editor = getSharedPreferences("userData", MODE_PRIVATE).edit();
-                                editor.putLong("id", response.body().getUserId());
-                                editor.putString("email", response.body().getEmail());
-                                editor.apply();
+                if(userName.getText().toString().length()!=0 & userName.getText().toString().length()<20 & email.getText().toString().length()!=0 & address.getText().toString().length()!=0) {
+                    if (password.getText().toString().equals(confirmPassword.getText().toString())) {
+                        Call<ResponseFromUser> userCall = projectApi.addUser(new User(userName.getText().toString(), password.getText().toString(), email.getText().toString(), address.getText().toString(), nameEditText.getText().toString()));
+                        userCall.enqueue(new Callback<ResponseFromUser>() {
+                            @Override
+                            public void onResponse(Call<ResponseFromUser> call, Response<ResponseFromUser> response) {
+                                if (response.body().isResponse() == true) {
+                                    //edit
+                                    SharedPreferences.Editor editor = getSharedPreferences("userData", MODE_PRIVATE).edit();
+                                    editor.putLong("id", response.body().getUserId());
+                                    editor.putString("email", response.body().getEmail());
+                                    editor.apply();
 
-                                Toast.makeText(SignupActivity.this, "Sign up success", Toast.LENGTH_SHORT).show();
+                                    Toast.makeText(SignupActivity.this, "Sign up success", Toast.LENGTH_SHORT).show();
 
-                                Intent displayByCategory = new Intent(SignupActivity.this, DisplayByCategory.class);
-                                startActivity(displayByCategory);
-                            } else {
-                                Toast.makeText(SignupActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                    Intent displayByCategory = new Intent(SignupActivity.this, DisplayByCategory.class);
+                                    startActivity(displayByCategory);
+                                } else {
+                                    Toast.makeText(SignupActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                }
                             }
-                        }
 
-                        @Override
-                        public void onFailure(Call<ResponseFromUser> call, Throwable t) {
-                            Toast.makeText(SignupActivity.this, "Failed to add user into database", Toast.LENGTH_LONG);
-                        }
-                    });
+                            @Override
+                            public void onFailure(Call<ResponseFromUser> call, Throwable t) {
+                                Toast.makeText(SignupActivity.this, "Failed to add user into database", Toast.LENGTH_LONG);
+                            }
+                        });
+                    } else {
+
+                        Toast.makeText(SignupActivity.this,"Passwords doesn't match",Toast.LENGTH_LONG).show();
+
+                    }
                 }else{
+
                     Toast.makeText(SignupActivity.this, "Enter userName and Email", Toast.LENGTH_LONG).show();
+
                 }
             }
         });
