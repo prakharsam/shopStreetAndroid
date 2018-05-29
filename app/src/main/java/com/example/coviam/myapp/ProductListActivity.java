@@ -35,11 +35,9 @@ public class ProductListActivity extends AppCompatActivity {
     ProductAdapter productadapter;
     List<ProductDto> productlist;
     List<com.example.coviam.myapp.Model.ProductDto> productlist1;
-
+    boolean boolvariable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        boolean boolvariable;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.productlist);
         productlist = new ArrayList<>();
@@ -67,26 +65,28 @@ public class ProductListActivity extends AppCompatActivity {
             userCall2.enqueue(new Callback<List<com.example.coviam.myapp.Model.ProductDto>>() {
                 @Override
                 public void onResponse(Call<List<com.example.coviam.myapp.Model.ProductDto>> call, Response<List<com.example.coviam.myapp.Model.ProductDto>> response) {
-                    productlist1.addAll(response.body());
-                    for (int i = 0 ; i < response.body().size() ; i++) {
-                        com.example.coviam.myapp.Model.ProductDto existingProductDto = response.body().get(i);
-                        ProductDto productDto = new ProductDto();
-                        if(response.body()==null){
-                            Toast.makeText(ProductListActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                   if (null != response.body()) {
+                       productlist1.addAll(response.body());
+                       for (int i = 0; i < response.body().size(); i++) {
+                           com.example.coviam.myapp.Model.ProductDto existingProductDto = response.body().get(i);
+                           ProductDto productDto = new ProductDto();
+                           if (response.body() == null) {
+                               Toast.makeText(ProductListActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
 
 
-                        }
-                        else{
-                        productDto.setProductPrice(existingProductDto.getProductPrice());
-                        productDto.setProductImgUrl(existingProductDto.getProductImgUrl());
-                        productDto.setProductName(existingProductDto.getProductName());
-                        productDto.setProductID(existingProductDto.getProductID());
-                        productDto.setMerchantName(existingProductDto.getProductMerchantName());
-                        System.out.println((productDto.toString()));
-                        productlist.add(productDto);
-                    }}
-                    productadapter.notifyDataSetChanged();
-                    Toast.makeText(ProductListActivity.this, "Got Products For Searchword", Toast.LENGTH_LONG).show();
+                           } else {
+                               productDto.setProductPrice(existingProductDto.getProductPrice());
+                               productDto.setProductImgUrl(existingProductDto.getProductImgUrl());
+                               productDto.setProductName(existingProductDto.getProductName());
+                               productDto.setProductID(existingProductDto.getProductID());
+                               productDto.setMerchantName(existingProductDto.getProductMerchantName());
+                               System.out.println((productDto.toString()));
+                               productlist.add(productDto);
+                           }
+                       }
+                       productadapter.notifyDataSetChanged();
+                       Toast.makeText(ProductListActivity.this, "Got Products For Searchword", Toast.LENGTH_LONG).show();
+                   }
                 }
 
                 @Override
