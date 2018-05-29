@@ -37,7 +37,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
     //IProductAPI mIProductAPI;
 
     Long productID;
-    ProjectAPI projectApi;
+    ProjectAPI projectApi ,projectApi1;
     ProductDto productDto = new ProductDto();
     MerchantDto merchantDto;
     ImageView imageView;
@@ -61,7 +61,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
 
         Button addcart = findViewById(R.id.bt_cart);
         Button buynow = findViewById(R.id.bt_buynow);
-        Button addtocart=findViewById(R.id.bt_addtocart);
+        Button addtocart = findViewById(R.id.bt_addtocart);
         final TextView textViewName = findViewById(R.id.name_tag);
         final TextView textViewPrice = findViewById(R.id.price_tag);
         final TextView description = findViewById(R.id.description_tag);
@@ -78,12 +78,12 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         userCall.enqueue(new Callback<ProductDto>() {
             @Override
             public void onResponse(Call<ProductDto> call, Response<ProductDto> response) {
-                textViewName.setText("NAME:"+response.body().getProductName());
+                textViewName.setText("NAME:" + response.body().getProductName());
                 productDto.setProductID(response.body().getProductID());
 
                 productDto.setProductName(response.body().getProductName());
 
-                textViewPrice.setText("PRICE:"+response.body().getProductPrice() + "");
+                textViewPrice.setText("PRICE:" + response.body().getProductPrice() + "");
 
                 productDto.setProductPrice(response.body().getProductPrice());
 
@@ -91,7 +91,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
 
                 productDto.setMerchantID(response.body().getMerchantID());
 
-                merchantName.setText("MERCHANT:"+response.body().getMerchantName());
+                merchantName.setText("MERCHANT:" + response.body().getMerchantName());
 
                 Glide.with(ProductDetailActivity.this).load(response.body().getProductImgUrl()).into(imageView);
 
@@ -119,7 +119,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         });
 
 
-        addcart.setOnClickListener(new View.OnClickListener() {
+        buynow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = getIntent();
@@ -142,38 +142,16 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
             }
         });
 
-//        addtocart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent intent = getIntent();
-//
-//                intent.putExtra("pid", productID);
-//
-//                intent.putExtra("mid", productDto.getMerchantID());
-//
-//                System.out.println("QTY" + quantityEntry.getText().toString());
-//
-//                intent.putExtra("qty", quantityEntry.getText().toString());
-//
-//
-//                intent.putExtra("price", productDto.getProductPrice());
-//
-//
-//                projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
-//                addToCart();
-//
-//            }
-//        });
 
-//        buynow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
-//                addToCart();
-//            }
-//        });
+
+        addcart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
+                addToCart1();
+            }
+       });
 
     }
 
@@ -246,5 +224,52 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
 //        });
     }
 
+    private void addToCart1() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
 
+        SharedPreferences preferences = getSharedPreferences("userData", MODE_PRIVATE);
+        Long userid = preferences.getLong("id", 0);
+
+
+        Long pid = getIntent().getLongExtra("pid", 0L);
+        String quantity = getIntent().getStringExtra("qty");
+        Long mid = getIntent().getLongExtra("mid", 0L);
+        Double price = getIntent().getDoubleExtra("price", 0);
+
+        Long qty = 0L;
+        if (quantity != null && !quantity.isEmpty()) {
+            qty = Long.parseLong(quantity);
+        } else {
+            qty = 1L;
+        }
+
+
+        Call<CartResponseDTO> call = projectApi.addToCartApi(new CartData(userid, pid, qty, mid, price));
+        call.enqueue(new Callback<CartResponseDTO>() {
+            @Override
+            public void onResponse(Call<CartResponseDTO> call, Response<CartResponseDTO> response) {
+                if (response.body().getSuccess()) {
+                    progressDialog.dismiss();
+
+
+                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CartResponseDTO> call, Throwable t) {
+                progressDialog.dismiss();
+            }
+        });
+
+    }
+
+    @Override
+    public void addtocartfromadapter() {
+        addToCart1();
+    }
 }

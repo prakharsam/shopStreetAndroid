@@ -5,7 +5,8 @@
     android:id="@+id/cv_parent_merchant"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="10dp">
+    android:layout_margin="10dp"
+    android:background="#adff2f	">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -110,6 +111,7 @@
                 android:id="@+id/bt_addtocart"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:background="#9370db	"
                 android:text=" add to Cart" />
 
         </LinearLayout>

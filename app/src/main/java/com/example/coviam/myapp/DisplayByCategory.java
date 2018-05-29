@@ -129,7 +129,12 @@ public class DisplayByCategory extends AppCompatActivity {
             editors.apply();
             Intent intent = new Intent(DisplayByCategory.this, LoginActivity.class);
             startActivity(intent);
+        }else if(id== R.id.action_home) {
+            Intent displayByCategory = new Intent(DisplayByCategory.this, DisplayByCategory.class);
+            startActivity(displayByCategory);
+            return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }

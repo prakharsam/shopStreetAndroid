@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.coviam.myapp.Adapter.CategoryAdapter;
@@ -133,10 +134,23 @@ public class ProductListActivity extends AppCompatActivity {
             //Toast.makeText(ProductListActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
             return true;
         } else if (id == R.id.action_search) {
-            //TODO handle search click
-
+            Intent intent = new Intent(ProductListActivity.this, ProductListActivity.class);
+            ;
+            intent.putExtra("isSearch", true);
+            intent.putExtra("searchName", ((EditText) findViewById(R.id.et_search)).getText().toString());
+            startActivity(intent);
             Toast.makeText(ProductListActivity.this, "Action searched clicked", Toast.LENGTH_LONG).show();
 
+        } else if (id == R.id.action_logout) {
+            SharedPreferences.Editor editors = getSharedPreferences("userData", MODE_PRIVATE).edit();
+            editors.clear();
+            editors.apply();
+            Intent intent = new Intent(ProductListActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }else if(id== R.id.action_home) {
+            Intent displayByCategory = new Intent(ProductListActivity.this, DisplayByCategory.class);
+            startActivity(displayByCategory);
+            return true;
         }
 
         return super.onOptionsItemSelected(item);
