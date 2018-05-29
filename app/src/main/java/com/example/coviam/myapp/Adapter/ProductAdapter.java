@@ -38,7 +38,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ProductViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ProductViewHolder holder, final int position) {
         final ProductDto productDto = mProductDto.get(position);
         holder.textViewTitle.setText(productDto.getProductName());
         holder.textViewPrice.setText("₹"+String.valueOf(productDto.getProductPrice()));
@@ -47,8 +47,21 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
             @Override
             public void onClick(View v) {
                 Long productID = productDto.getProductID();
+                String productName=productDto.getProductName();
+                String ImgUrl=productDto.getProductImgUrl();
+                String merchantName=productDto.getMerchantName();
+                double price=productDto.getProductPrice();
+                Long merchantID=productDto.getMerchantID();
+
+
                 Intent productDisplay = new Intent(holder.parent.getContext(), ProductDetailActivity.class);
                 productDisplay.putExtra("productID", productID);
+                productDisplay.putExtra("productName",productName);
+                productDisplay.putExtra("merchantName",merchantName);
+                productDisplay.putExtra("productPrice",price);
+                productDisplay.putExtra("ImgUrl",ImgUrl);
+                productDisplay.putExtra("merchantID",merchantID);
+
                 holder.parent.getContext().startActivity(productDisplay);
             }
         });

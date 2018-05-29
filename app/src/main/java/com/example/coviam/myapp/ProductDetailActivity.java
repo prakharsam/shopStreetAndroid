@@ -37,7 +37,15 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
     //IProductAPI mIProductAPI;
 
     Long productID;
+<<<<<<< HEAD
     ProjectAPI projectApi ,projectApi1;
+=======
+    String merchantname,imgUrl,productName;
+    Long merchantId;
+    Double price;
+
+    ProjectAPI projectApi;
+>>>>>>> 37b7a0f38fb3478b05b546007cc58834ee071644
     ProductDto productDto = new ProductDto();
     MerchantDto merchantDto;
     ImageView imageView;
@@ -53,7 +61,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         merchantlist = new ArrayList<>();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         recyclerview = (RecyclerView) findViewById(R.id.recycler_view1);
@@ -74,27 +82,53 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         recyclerview.setAdapter(merchantAdapter);
         projectApi = LoginController.getInstance().getProductClient().create(ProjectAPI.class);
         productID = intent.getLongExtra("productID", 0);
+        productName=intent.getStringExtra("productName");
+        merchantname=intent.getStringExtra("merchantName");
+        price = intent.getDoubleExtra("productPrice",0.0);
+        merchantId=intent.getLongExtra("merchantID",0);
+        imgUrl=intent.getStringExtra("ImgUrl");
+
         Call<ProductDto> userCall = projectApi.getproductbyid(productID);
         userCall.enqueue(new Callback<ProductDto>() {
             @Override
             public void onResponse(Call<ProductDto> call, Response<ProductDto> response) {
+<<<<<<< HEAD
                 textViewName.setText("NAME:" + response.body().getProductName());
                 productDto.setProductID(response.body().getProductID());
 
                 productDto.setProductName(response.body().getProductName());
 
                 textViewPrice.setText("PRICE:" + response.body().getProductPrice() + "");
+=======
+                if(response.body()!=null) {
+                    textViewName.setText("NAME:" + response.body().getProductName());
+                    productDto.setProductID(response.body().getProductID());
 
-                productDto.setProductPrice(response.body().getProductPrice());
+                    productDto.setProductName(response.body().getProductName());
+>>>>>>> 37b7a0f38fb3478b05b546007cc58834ee071644
 
-                description.setText(response.body().getProductDescription());
+                    textViewPrice.setText("PRICE:" + response.body().getProductPrice() + "");
 
-                productDto.setMerchantID(response.body().getMerchantID());
+                    productDto.setProductPrice(response.body().getProductPrice());
 
+                    description.setText(response.body().getProductDescription());
+
+<<<<<<< HEAD
                 merchantName.setText("MERCHANT:" + response.body().getMerchantName());
+=======
+                    productDto.setMerchantID(response.body().getMerchantID());
+>>>>>>> 37b7a0f38fb3478b05b546007cc58834ee071644
 
-                Glide.with(ProductDetailActivity.this).load(response.body().getProductImgUrl()).into(imageView);
+                    merchantName.setText("MERCHANT:" + response.body().getMerchantName());
 
+                    Glide.with(ProductDetailActivity.this).load(response.body().getProductImgUrl()).into(imageView);
+                }
+                else if(response.body()==null){
+                    textViewName.setText(productName);
+                    textViewPrice.setText(String.valueOf(price));
+                    merchantName.setText(merchantname);
+                    Glide.with(ProductDetailActivity.this).load(imgUrl).into(imageView);
+                }
             }
 
             @Override
