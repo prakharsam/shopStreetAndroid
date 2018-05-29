@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/magnify"
+        android:orderInCategory="300"
+        android:title="User"
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/action_cart"
+        android:icon="@drawable/addtocart"
+        android:orderInCategory="300"
+        android:title="User"
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/action_logout"
+        android:icon="@drawable/logout"
+        android:orderInCategory="300"
+        android:title="User"
+        app:showAsAction="always"></item>
+
+    <item
+        android:id="@+id/action_home"
+        android:icon="@drawable/home"
+        android:orderInCategory="300"
+        android:title="User"
+        app:showAsAction="always"></item>
+
+
+</menu>
+
