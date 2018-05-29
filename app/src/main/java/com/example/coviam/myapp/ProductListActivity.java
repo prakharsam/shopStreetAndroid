@@ -68,9 +68,10 @@ public class ProductListActivity extends AppCompatActivity {
                     for (int i = 0 ; i < response.body().size() ; i++) {
                         com.example.coviam.myapp.Model.ProductDto existingProductDto = response.body().get(i);
                         ProductDto productDto = new ProductDto();
-                        productDto.setProductID(existingProductDto.getProductId());
+                        productDto.setProductID(existingProductDto.getProductID());
                         productDto.setProductName(existingProductDto.getProductName());
                         productDto.setProductImgUrl(existingProductDto.getProductImgUrl());
+                        productDto.setProductPrice(existingProductDto.getProductPrice());
                         productlist.add(productDto);
 //                        productDto.setProductPrice(existingProductDto.getPric);
                     }
