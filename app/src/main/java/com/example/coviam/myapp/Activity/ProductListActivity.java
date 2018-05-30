@@ -1,6 +1,7 @@
 package com.example.coviam.myapp.Activity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -39,7 +40,7 @@ public class ProductListActivity extends AppCompatActivity {
     List<ProductDto> productlist;
     List<SearchDto> productlist1;
     boolean boolvariable;
-    //private AlertDialog alertDialog = new AlertDialog.Builder(ProductListActivity.this).create();
+    private AlertDialog.Builder alertDialog ;
 
 
     @Override
@@ -53,6 +54,8 @@ public class ProductListActivity extends AppCompatActivity {
         recyclerview.setHasFixedSize(true);
         recyclerview.setLayoutManager(new GridLayoutManager(this, 2));
         Intent intent = getIntent();
+
+        alertDialog=new AlertDialog.Builder(ProductListActivity.this);
         Long categoryId = intent.getLongExtra("categoryID", 0);
 
         String name = intent.getStringExtra("searchName");
@@ -77,9 +80,15 @@ public class ProductListActivity extends AppCompatActivity {
                             SearchDto existingSearchDto = response.body().get(i);
                             ProductDto productDto = new ProductDto();
                             if (response.body() == null) {
-//                                alertDialog.setTitle("OOps!!");
-//                                alertDialog.setMessage("No products available!!");
-//                                alertDialog.show();
+                                alertDialog.setTitle("OOps!!");
+                                alertDialog.setMessage("No products available!!");
+                                alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
+                              alertDialog.show();
 
 
                             } else {
@@ -98,9 +107,15 @@ public class ProductListActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<List<SearchDto>> call, Throwable t) {
-//                    alertDialog.setTitle("OOps!!");
-//                    alertDialog.setMessage("Not able to retrieve products!!");
-//                    alertDialog.show();
+                    alertDialog.setTitle("OOps!!");
+                    alertDialog.setMessage("Not able to retrieve products!!");
+                    alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialog.show();
                 }
             });}
 

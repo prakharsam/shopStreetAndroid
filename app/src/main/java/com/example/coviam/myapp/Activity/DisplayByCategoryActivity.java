@@ -43,7 +43,7 @@ public class DisplayByCategoryActivity extends AppCompatActivity {
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         productlist = new ArrayList<>();
         setSupportActionBar((Toolbar) findViewById(R.id.toolbar1));
-        recyclerview = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerview = (RecyclerView) findViewById(R.id.recycler_view_main);
         recyclerview.setHasFixedSize(true);
         recyclerview.setLayoutManager(new GridLayoutManager(this, 2));
         SharedPreferences editor = getSharedPreferences("userData", MODE_PRIVATE);

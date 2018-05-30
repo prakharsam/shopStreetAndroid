@@ -1,5 +1,7 @@
 package com.example.coviam.myapp.Activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,6 +32,7 @@ public class MerchantActivity extends AppCompatActivity implements MerchantAdapt
     MerchantAdapter merchantAdapter;
     List<MerchantDto> merchantlist;
     ProjectAPI projectApi;
+    private AlertDialog.Builder alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,26 +47,42 @@ public class MerchantActivity extends AppCompatActivity implements MerchantAdapt
         recyclerview.setAdapter(merchantAdapter);
         projectApi = LoginController.getInstance().getProductClient().create(ProjectAPI.class);
         productID = getIntent().getLongExtra("productID", 0);
-
+        alertDialog = new AlertDialog.Builder(MerchantActivity.this);
 
 
         Call<List<MerchantDto>> userCall1 = projectApi.getMerchantsByPid(productID);
         userCall1.enqueue(new Callback<List<MerchantDto>>() {
             @Override
             public void onResponse(Call<List<MerchantDto>> call, Response<List<MerchantDto>> response) {
-                if(response.body()!=null) {
+                if (null != response.body()) {
                     merchantlist.addAll(response.body());
                     merchantAdapter.notifyDataSetChanged();
-                }
-                else
-                {
-                    Toast.makeText(MerchantActivity.this,"response empty",Toast.LENGTH_LONG).show();
+                } else {
+                    alertDialog.setTitle("OOps!!");
+                    alertDialog.setMessage("No merchants For this product");
+                    alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialog.show();
+                    alertDialog.show();
                 }
             }
 
             @Override
             public void onFailure(Call<List<MerchantDto>> call, Throwable t) {
-                Toast.makeText(MerchantActivity.this, "No merchants to display", Toast.LENGTH_LONG).show();
+                alertDialog.setTitle("OOps!!");
+                alertDialog.setMessage("Something Went Wrong .Try after sometime");
+                alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.show();
+                alertDialog.show();
             }
         });
     }
@@ -89,17 +108,18 @@ public class MerchantActivity extends AppCompatActivity implements MerchantAdapt
             qty = 1L;
         }
 
+        ProjectAPI projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
 
         Call<CartResponseDTO> call = projectApi.addToCartApi(new CartData(userid, pid, qty, mid, price));
         call.enqueue(new Callback<CartResponseDTO>() {
             @Override
             public void onResponse(Call<CartResponseDTO> call, Response<CartResponseDTO> response) {
-                if (response.body().getSuccess()) {
+                if (response.body() != null && response.body().getSuccess()) {
                     progressDialog.dismiss();
                     Toast.makeText(MerchantActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
                 } else {
                     progressDialog.dismiss();
-                    Toast.makeText(MerchantActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(MerchantActivity.this, "Failed To Add To Cart", Toast.LENGTH_LONG).show();
                 }
             }
 

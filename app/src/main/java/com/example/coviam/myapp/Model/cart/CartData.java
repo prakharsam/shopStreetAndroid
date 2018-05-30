@@ -2,7 +2,7 @@ package com.example.coviam.myapp.Model.cart;
 import com.google.gson.annotations.SerializedName;
 
 public class CartData {
-        @SerializedName("cartID")
+        @SerializedName("cartId")
         Long cartid;
         @SerializedName("productId")
         Long pid;
