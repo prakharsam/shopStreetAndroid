@@ -1,6 +1,7 @@
 package com.example.coviam.myapp.Activity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -25,7 +26,7 @@ public class MerchantActivity extends AppCompatActivity implements MerchantAdapt
     MerchantAdapter merchantAdapter;
     List<MerchantDto> merchantlist;
     ProjectAPI projectApi;
-    private AlertDialog alertDialog = new AlertDialog.Builder(MerchantActivity.this).create();
+    private AlertDialog.Builder alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,7 @@ public class MerchantActivity extends AppCompatActivity implements MerchantAdapt
         merchantAdapter = new MerchantAdapter(merchantlist, this);
         projectApi = LoginController.getInstance().getProductClient().create(ProjectAPI.class);
         productID = getIntent().getLongExtra("productID", 0);
-
+        alertDialog = new AlertDialog.Builder(MerchantActivity.this);
 
         Call<List<MerchantDto>> userCall1 = projectApi.getMerchantsByPid(productID);
         userCall1.enqueue(new Callback<List<MerchantDto>>() {
@@ -47,6 +48,13 @@ public class MerchantActivity extends AppCompatActivity implements MerchantAdapt
                 } else {
                     alertDialog.setTitle("OOps!!");
                     alertDialog.setMessage("No merchants For this product");
+                    alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
+                    alertDialog.show();
                     alertDialog.show();
                 }
             }
@@ -54,6 +62,13 @@ public class MerchantActivity extends AppCompatActivity implements MerchantAdapt
             public void onFailure(Call<List<MerchantDto>> call, Throwable t) {
                 alertDialog.setTitle("OOps!!");
                 alertDialog.setMessage("Something Went Wrong .Try after sometime");
+                alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+                alertDialog.show();
                 alertDialog.show();
             }
         });
