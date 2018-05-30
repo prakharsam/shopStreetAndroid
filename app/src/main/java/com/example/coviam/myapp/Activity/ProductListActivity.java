@@ -39,7 +39,7 @@ public class ProductListActivity extends AppCompatActivity {
     List<ProductDto> productlist;
     List<SearchDto> productlist1;
     boolean boolvariable;
-    private AlertDialog alertDialog = new AlertDialog.Builder(ProductListActivity.this).create();
+    //private AlertDialog alertDialog = new AlertDialog.Builder(ProductListActivity.this).create();
 
 
     @Override
@@ -77,9 +77,9 @@ public class ProductListActivity extends AppCompatActivity {
                             SearchDto existingSearchDto = response.body().get(i);
                             ProductDto productDto = new ProductDto();
                             if (response.body() == null) {
-                                alertDialog.setTitle("OOps!!");
-                                alertDialog.setMessage("No products available!!");
-                                alertDialog.show();
+//                                alertDialog.setTitle("OOps!!");
+//                                alertDialog.setMessage("No products available!!");
+//                                alertDialog.show();
 
 
                             } else {
@@ -98,9 +98,9 @@ public class ProductListActivity extends AppCompatActivity {
 
                 @Override
                 public void onFailure(Call<List<SearchDto>> call, Throwable t) {
-                    alertDialog.setTitle("OOps!!");
-                    alertDialog.setMessage("Not able to retrieve products!!");
-                    alertDialog.show();
+//                    alertDialog.setTitle("OOps!!");
+//                    alertDialog.setMessage("Not able to retrieve products!!");
+//                    alertDialog.show();
                 }
             });}
 

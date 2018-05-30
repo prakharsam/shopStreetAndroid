@@ -41,12 +41,13 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
     private ProjectAPI mIProductApi1;
     private Toolbar mTopToolbar;
     private TextView noDataFound;
-    private AlertDialog alertDialog = new AlertDialog.Builder(CartPageActivity.this).create();
+    private AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_recycler_view);
+        alertDialog= new AlertDialog.Builder(CartPageActivity.this).create();
         mTopToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(mTopToolbar);
         productList = new ArrayList<>();
@@ -92,7 +93,7 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
                                 progressDialog.dismiss();
                                 //Read Update
                                 alertDialog.setTitle("Congrats!!");
-                                alertDialog.setMessage("your order is placed." + response.body().getOrderid());
+                                alertDialog.setMessage("Your Order Is Placed." + response.body().getOrderid());
 
 
                                 alertDialog.show();
@@ -101,6 +102,7 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
 
                             }
                         } else {
+                            //Toast.makeText(CartPageActivity.this,"response is empty in cart",Toast.LENGTH_LONG).show();
                             alertDialog.setTitle("OOps!!");
                             alertDialog.setMessage("your order could'nt be placed");
                             alertDialog.show();
@@ -137,15 +139,16 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
 
                 if (null != response.body()) {
 
-                    if (response.body().isSuccess()) {
-
-
+                    if (response.body().isSuccess() && !response.body().getItems().isEmpty()) {
                         productList.clear();
                         productList.addAll(response.body().getItems());
                         cartAdapter.notifyDataSetChanged();
                         progressDialog.dismiss();
-                        alertDialog.setTitle("OOps!!");
-                        alertDialog.setMessage("Cannot retrive items");
+                    }
+                    else{
+                        progressDialog.dismiss();
+                        alertDialog.setTitle("Oooh!!");
+                        alertDialog.setMessage("Your Cart Is Empty");
                         alertDialog.show();
                     }
                 } else {

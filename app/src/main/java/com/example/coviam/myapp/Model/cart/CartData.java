@@ -2,15 +2,15 @@ package com.example.coviam.myapp.Model.cart;
 import com.google.gson.annotations.SerializedName;
 
 public class CartData {
-        @SerializedName("cartid")
+        @SerializedName("cartID")
         Long cartid;
-        @SerializedName("pid")
+        @SerializedName("productId")
         Long pid;
         @SerializedName("qty")
         Long qty;
-        @SerializedName("mid")
+        @SerializedName("merchantId")
         Long mid;
-        @SerializedName("price")
+        @SerializedName("productPrice")
         double price;
 
 

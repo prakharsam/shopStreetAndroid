@@ -7,6 +7,7 @@ public class MerchantDto {
     private Long merchantID;
     private String merchantName;
     private int weightedFactor;
+    private int merchantRating;
     private Double productPrice;
     private Long productStock;
 
@@ -44,6 +45,14 @@ public class MerchantDto {
 
     public void setMerchantID(Long merchantID) {
         this.merchantID = merchantID;
+    }
+
+    public int getMerchantRating() {
+        return merchantRating;
+    }
+
+    public void setMerchantRating(int merchantRating) {
+        this.merchantRating = merchantRating;
     }
 
     public int getWeightedFactor() {

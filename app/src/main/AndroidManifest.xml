@@ -28,9 +28,7 @@
         <activity android:name=".Activity.ProductDetailActivity" />
         <activity android:name=".Activity.Main2Activity" />
         <activity
-            android:name=".Activity.DisplayByCategoryActivity"
-            android:noHistory="true" />
-        <activity android:name=".Activity.NothingAvailableActivity" />
+            android:name=".Activity.DisplayByCategoryActivity" />
         <activity android:name=".Activity.MerchantActivity"></activity>
     </application>
 

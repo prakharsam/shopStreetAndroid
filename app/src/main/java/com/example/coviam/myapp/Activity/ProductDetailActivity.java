@@ -64,6 +64,18 @@ public class ProductDetailActivity extends AppCompatActivity {
         //recyclerview = (RecyclerView) findViewById(R.id.recycler_view1);
         //recyclerview.setLayoutManager(new GridLayoutManager(ProductDetailActivity.this, 1));
         RelativeLayout productFromOtherMerchants = findViewById(R.id.other_merchant);
+        TextView otherMerchant=findViewById(R.id.no_of_merchant);
+        otherMerchant.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent1=new Intent(ProductDetailActivity.this,MerchantActivity.class);
+                intent1.putExtra("productID",productID);
+                intent1.putExtra("merchantID",merchantId);
+                intent1.putExtra("price",price);
+                startActivity(intent1);
+            }
+        });
+
         Button addcart = findViewById(R.id.bt_cart);
         Button buynow = findViewById(R.id.bt_buynow);
 
@@ -122,9 +134,18 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             }
         });
+
+        addcart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addToCart();
+            }
+        });
     }
 
-    private void addToCart () {
+
+
+    private void addToCart (){
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.show();
 

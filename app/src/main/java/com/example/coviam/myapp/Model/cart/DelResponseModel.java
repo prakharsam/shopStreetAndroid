@@ -7,7 +7,7 @@ package com.example.coviam.myapp.Model.cart;
     public class DelResponseModel {
         @SerializedName("success")
         private Boolean success;
-        @SerializedName("reason")
+        @SerializedName("message")
         private String reason;
 
         public DelResponseModel(Boolean success, String reason) {

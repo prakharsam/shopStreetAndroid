@@ -50,19 +50,17 @@ public class DisplayByCategoryActivity extends AppCompatActivity {
         if (!editor.contains("id")) {
             Intent intent = new Intent(DisplayByCategoryActivity.this, LoginActivity.class);
             startActivity(intent);
-
-            Button orderHistory = findViewById(R.id.bt_orderHistory);
-
-            orderHistory.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(DisplayByCategoryActivity.this, OrderHistoryActivity.class);
-                    startActivity(intent);
-                }
-            });
-
         }
 
+        Button orderHistory = findViewById(R.id.bt_orderHistory);
+
+        orderHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(DisplayByCategoryActivity.this, OrderHistoryActivity.class);
+                startActivity(intent);
+            }
+        });
 
         productlist.add(
                 new CategoryModel(

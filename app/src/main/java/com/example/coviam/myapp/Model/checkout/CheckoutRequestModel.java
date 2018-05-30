@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName;
 
 public class CheckoutRequestModel {
 
-        @SerializedName("cartid")
+        @SerializedName("cartId")
         private Long cartid;
-        @SerializedName("userid")
+        @SerializedName("userId")
         private Long userid;
         @SerializedName("email")
         private String email;

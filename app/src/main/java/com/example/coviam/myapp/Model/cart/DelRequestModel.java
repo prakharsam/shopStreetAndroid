@@ -3,11 +3,11 @@ package com.example.coviam.myapp.Model.cart;
     import com.google.gson.annotations.SerializedName;
 
     public class DelRequestModel {
-        @SerializedName("cartid")
+        @SerializedName("cartId")
         private Long cartid;
-        @SerializedName("pid")
+        @SerializedName("productId")
         private Long pid;
-        @SerializedName("mid")
+        @SerializedName("merchantId")
         private Long mid;
 
         public DelRequestModel(Long cartid, Long pid, Long mid) {
