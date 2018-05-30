@@ -122,54 +122,49 @@ public class ProductDetailActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    private void addToCart () {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
+
+        SharedPreferences preferences = getSharedPreferences("userData", MODE_PRIVATE);
+        Long userid = preferences.getLong("id", 0);
 
 
-        private void addToCart () {
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.show();
+        Long pid = getIntent().getLongExtra("pid", 0L);
+        String quantity = getIntent().getStringExtra("qty");
+        Long mid = getIntent().getLongExtra("mid", 0L);
+        Double price = getIntent().getDoubleExtra("price", 0);
 
-            SharedPreferences preferences = getSharedPreferences("userData", MODE_PRIVATE);
-            Long userid = preferences.getLong("id", 0);
-
-
-            Long pid = getIntent().getLongExtra("pid", 0L);
-            String quantity = getIntent().getStringExtra("qty");
-            Long mid = getIntent().getLongExtra("mid", 0L);
-            Double price = getIntent().getDoubleExtra("price", 0);
-
-            Long qty = 0L;
-            if (quantity != null && !quantity.isEmpty()) {
-                qty = Long.parseLong(quantity);
-            } else {
-                qty = 1L;
-            }
-
-
-            Call<CartResponseDTO> call = projectApi.addToCartApi(new CartData(userid, pid, qty, mid, price));
-            call.enqueue(new Callback<CartResponseDTO>() {
-                @Override
-                public void onResponse(Call<CartResponseDTO> call, Response<CartResponseDTO> response) {
-                    if (response.body().getSuccess()) {
-                        progressDialog.dismiss();
-                        Intent displayByCategory = new Intent(ProductDetailActivity.this, CartPageActivity.class);
-                        startActivity(displayByCategory);
-
-                        Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
-                    } else {
-                        progressDialog.dismiss();
-                        Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<CartResponseDTO> call, Throwable t) {
-                    progressDialog.dismiss();
-                }
-            });
-
-
+        Long qty = 0L;
+        if (quantity != null && !quantity.isEmpty()) {
+            qty = Long.parseLong(quantity);
+        } else {
+            qty = 1L;
         }
 
 
+        Call<CartResponseDTO> call = projectApi.addToCartApi(new CartData(userid, pid, qty, mid, price));
+        call.enqueue(new Callback<CartResponseDTO>() {
+            @Override
+            public void onResponse(Call<CartResponseDTO> call, Response<CartResponseDTO> response) {
+                if (response.body().getSuccess()) {
+                    progressDialog.dismiss();
+                    Intent displayByCategory = new Intent(ProductDetailActivity.this, CartPageActivity.class);
+                    startActivity(displayByCategory);
+
+                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CartResponseDTO> call, Throwable t) {
+                progressDialog.dismiss();
+            }
+        });
     }
 }
