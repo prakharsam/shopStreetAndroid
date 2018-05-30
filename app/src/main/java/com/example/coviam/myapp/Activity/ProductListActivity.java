@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import com.example.coviam.myapp.Adapter.ProductAdapter;
 import com.example.coviam.myapp.network.LoginController;
-import com.example.coviam.myapp.ProductDto;
+import com.example.coviam.myapp.Model.product.ProductDto;
 import com.example.coviam.myapp.network.ProjectAPI;
 import com.example.coviam.myapp.R;
 
@@ -35,7 +35,7 @@ public class ProductListActivity extends AppCompatActivity {
     RecyclerView recyclerview;
     ProductAdapter productadapter;
     List<ProductDto> productlist;
-    List<com.example.coviam.myapp.Model.ProductDto> productlist1;
+    List<com.example.coviam.myapp.Model.products.ProductDto> productlist1;
     boolean boolvariable;
 
     @Override
@@ -63,17 +63,17 @@ public class ProductListActivity extends AppCompatActivity {
 
             projectApi = LoginController.getInstance().getSearchClient().create(ProjectAPI.class);
 
-            Call<List<com.example.coviam.myapp.Model.ProductDto>> userCall2 = projectApi.search(name);
-            userCall2.enqueue(new Callback<List<com.example.coviam.myapp.Model.ProductDto>>() {
+            Call<List<com.example.coviam.myapp.Model.products.ProductDto>> userCall2 = projectApi.search(name);
+            userCall2.enqueue(new Callback<List<com.example.coviam.myapp.Model.products.ProductDto>>() {
                 @Override
-                public void onResponse(Call<List<com.example.coviam.myapp.Model.ProductDto>> call, Response<List<com.example.coviam.myapp.Model.ProductDto>> response) {
-                    if (null != response.body()) {
-                        productlist1.addAll(response.body());
-                        for (int i = 0; i < response.body().size(); i++) {
-                            com.example.coviam.myapp.Model.ProductDto existingProductDto = response.body().get(i);
-                            ProductDto productDto = new ProductDto();
-                            if (response.body() == null) {
-                                Toast.makeText(ProductListActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                public void onResponse(Call<List<com.example.coviam.myapp.Model.products.ProductDto>> call, Response<List<com.example.coviam.myapp.Model.products.ProductDto>> response) {
+                   if (null != response.body()) {
+                       productlist1.addAll(response.body());
+                       for (int i = 0; i < response.body().size(); i++) {
+                           com.example.coviam.myapp.Model.products.ProductDto existingProductDto = response.body().get(i);
+                           ProductDto productDto = new ProductDto();
+                           if (response.body() == null) {
+                               Toast.makeText(ProductListActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
 
 
                             } else {
@@ -92,7 +92,7 @@ public class ProductListActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onFailure(Call<List<com.example.coviam.myapp.Model.ProductDto>> call, Throwable t) {
+                public void onFailure(Call<List<com.example.coviam.myapp.Model.products.ProductDto>> call, Throwable t) {
                     Toast.makeText(ProductListActivity.this, "No Products for Searchword ", Toast.LENGTH_LONG).show();
                 }
             });
@@ -105,11 +105,7 @@ public class ProductListActivity extends AppCompatActivity {
                 public void onResponse(Call<List<ProductDto>> call, Response<List<ProductDto>> response) {
                     productlist.addAll(response.body());
                     productadapter.notifyDataSetChanged();
-                    if (null == response.body()) {
-                        Intent intent = new Intent(ProductListActivity.this, NothingAvailableActivity.class);
-                        startActivity(intent);
 
-                    }
                 }
 
                 @Override

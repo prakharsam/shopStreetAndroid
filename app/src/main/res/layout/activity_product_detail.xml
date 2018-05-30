@@ -7,22 +7,25 @@
     android:background="#ffffff"
     android:orientation="vertical">
 
-    <ImageView
-
-        android:id="@+id/product_image"
-        android:layout_width="300dp"
-        android:layout_height="250dp"
-        android:layout_marginLeft="20dp"
-        android:layout_gravity="center_horizontal"
-        android:src="@drawable/mobile" />
-
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_weight="1">
     <LinearLayout
         android:id="@+id/linear_layout"
         android:layout_width="match_parent"
-        android:layout_height="100dp"
+        android:layout_height="0dp"
+
         android:orientation="vertical">
 
+        <ImageView
+            android:id="@+id/product_image"
+            android:layout_marginTop="20dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_marginLeft="20dp"
+            android:layout_gravity="center_horizontal"
+            android:src="@drawable/mobile" />
 
         <TextView
             android:id="@+id/name_tag"
@@ -37,7 +40,8 @@
 
         <TextView
             android:id="@+id/price_tag"
-            android:layout_width="220dp"
+            android:layout_width="match_parent"
+            android:layout_marginTop="20dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
 
@@ -51,6 +55,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:layout_margin="20dp"
             android:hint="MERCHANT NAME"
             android:textSize="13dp"
             android:textStyle="bold" />
@@ -59,44 +64,17 @@
             android:id="@+id/quantity_tag2"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
             android:layout_marginLeft="20dp"
             android:hint="Quantity"
             android:textSize="10dp" />
-
-    </LinearLayout>
-
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <Button
-            android:id="@+id/bt_buynow"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginLeft="50dp"
-            android:layout_marginTop="10dp"
-            android:background="#9370db"
-            android:text="Buy Now" />
-
-        <Button
-            android:id="@+id/bt_cart"
-            android:layout_width="wrap_content"
-            android:layout_height="40dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="10dp"
-            android:background="#9370db"
-            android:text="AddTo Cart" />
-    </LinearLayout>
-
 
     <TextView
         android:id="@+id/description"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-
         android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
         android:padding="5dp"
         android:text="Description:"
         android:textSize="15dp" />
@@ -105,27 +83,66 @@
         android:id="@+id/description_tag"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="10dp"
         android:padding="0dp"
         android:text="Hp dell inspiration laptop octa core processor"
-        android:textSize="10dp" />
+        android:textSize="15dp" />
 
-    <!--<TextView-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:text="Recommedations:"-->
-        <!--android:textColor="#9370db"-->
-        <!--android:textSize="20dp"-->
-        <!--android:textStyle="bold" />-->
-
-    <android.support.v7.widget.RecyclerView
-
-        android:id="@+id/recycler_view1"
+    <RelativeLayout
+        android:id="@+id/other_merchant"
+        android:padding="16dp"
+        android:layout_marginTop="20dp"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:orientation="horizontal">
 
-    </android.support.v7.widget.RecyclerView>
+        <TextView
+            android:layout_alignParentLeft="true"
+            android:gravity="left"
+            android:id="@+id/no_of_merchant"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:hint="10 other merchant selling this product"
+            />
 
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="20dp"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/chevron_right" />
 
+    </RelativeLayout>
+
+</LinearLayout>
+</ScrollView>
+
+    <LinearLayout
+        android:gravity="bottom"
+        android:layout_gravity="bottom"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/bt_buynow"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#9370db"
+            android:text="Buy Now" />
+
+        <Button
+            android:id="@+id/bt_cart"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="#9370db"
+            android:text="AddTo Cart" />
+    </LinearLayout>
 </LinearLayout>
 

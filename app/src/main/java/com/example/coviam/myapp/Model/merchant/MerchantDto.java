@@ -1,4 +1,4 @@
-package com.example.coviam.myapp.Model;
+package com.example.coviam.myapp.Model.merchant;
 
 public class MerchantDto {
 

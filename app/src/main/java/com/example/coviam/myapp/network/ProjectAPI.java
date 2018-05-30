@@ -1,17 +1,17 @@
 package com.example.coviam.myapp.network;
 
-import com.example.coviam.myapp.Model.CartData;
-import com.example.coviam.myapp.Model.CartResponseDTO;
-import com.example.coviam.myapp.Model.CheckoutRequestModel;
-import com.example.coviam.myapp.Model.CheckoutResponseModel;
-import com.example.coviam.myapp.Model.DelRequestModel;
-import com.example.coviam.myapp.Model.DelResponseModel;
-import com.example.coviam.myapp.Model.GetCartResponse;
-import com.example.coviam.myapp.Model.MerchantDto;
+import com.example.coviam.myapp.Model.cart.CartData;
+import com.example.coviam.myapp.Model.cart.CartResponseDTO;
+import com.example.coviam.myapp.Model.checkout.CheckoutRequestModel;
+import com.example.coviam.myapp.Model.checkout.CheckoutResponseModel;
+import com.example.coviam.myapp.Model.cart.DelRequestModel;
+import com.example.coviam.myapp.Model.cart.DelResponseModel;
+import com.example.coviam.myapp.Model.cart.GetCartResponse;
+import com.example.coviam.myapp.Model.merchant.MerchantDto;
 import com.example.coviam.myapp.Model.Orders.OrdersParentResponse;
-import com.example.coviam.myapp.Model.ResponseFromUser;
-import com.example.coviam.myapp.Model.UserInfo;
-import com.example.coviam.myapp.ProductDto;
+import com.example.coviam.myapp.Model.authentication.ResponseFromUser;
+import com.example.coviam.myapp.Model.authentication.UserInfo;
+import com.example.coviam.myapp.Model.product.ProductDto;
 
 import java.util.List;
 
@@ -55,5 +55,5 @@ public interface ProjectAPI {
     Call<OrdersParentResponse> orderHistory(@Path("userid") Long id);
 
     @GET("search")
-    Call<List<com.example.coviam.myapp.Model.ProductDto>>search(@Query("name")String name);
+    Call<List<com.example.coviam.myapp.Model.products.ProductDto>>search(@Query("name")String name);
 }

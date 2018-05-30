@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.coviam.myapp.Model.MerchantDto;
+import com.example.coviam.myapp.Model.merchant.MerchantDto;
 import com.example.coviam.myapp.R;
 
 import java.util.List;

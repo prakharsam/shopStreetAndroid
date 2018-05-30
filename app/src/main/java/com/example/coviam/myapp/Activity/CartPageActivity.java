@@ -17,12 +17,12 @@ import android.widget.Toast;
 
 import com.example.coviam.myapp.Adapter.CartAdapter;
 import com.example.coviam.myapp.network.LoginController;
-import com.example.coviam.myapp.Model.CheckoutRequestModel;
-import com.example.coviam.myapp.Model.CheckoutResponseModel;
-import com.example.coviam.myapp.Model.DelRequestModel;
-import com.example.coviam.myapp.Model.DelResponseModel;
-import com.example.coviam.myapp.Model.GetCartResponse;
-import com.example.coviam.myapp.Model.GetItemRequest;
+import com.example.coviam.myapp.Model.checkout.CheckoutRequestModel;
+import com.example.coviam.myapp.Model.checkout.CheckoutResponseModel;
+import com.example.coviam.myapp.Model.cart.DelRequestModel;
+import com.example.coviam.myapp.Model.cart.DelResponseModel;
+import com.example.coviam.myapp.Model.cart.GetCartResponse;
+import com.example.coviam.myapp.Model.products.GetItemRequest;
 import com.example.coviam.myapp.network.ProjectAPI;
 import com.example.coviam.myapp.R;
 

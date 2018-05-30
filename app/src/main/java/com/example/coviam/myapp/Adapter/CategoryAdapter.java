@@ -13,8 +13,8 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.coviam.myapp.Model.category.CategoryModel;
 import com.example.coviam.myapp.network.LoginController;
-import com.example.coviam.myapp.Model.CategoryModel;
 import com.example.coviam.myapp.Activity.ProductListActivity;
 import com.example.coviam.myapp.network.ProjectAPI;
 import com.example.coviam.myapp.R;

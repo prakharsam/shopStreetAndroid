@@ -1,4 +1,4 @@
-package com.example.coviam.myapp.Model;
+package com.example.coviam.myapp.Model.category;
 
 public class CategoryModel {
     private int imageId;

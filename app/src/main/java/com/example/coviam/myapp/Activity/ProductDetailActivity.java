@@ -12,16 +12,17 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.coviam.myapp.Adapter.MerchantAdapter;
 import com.example.coviam.myapp.network.LoginController;
-import com.example.coviam.myapp.Model.CartData;
-import com.example.coviam.myapp.Model.CartResponseDTO;
-import com.example.coviam.myapp.Model.MerchantDto;
-import com.example.coviam.myapp.ProductDto;
+import com.example.coviam.myapp.Model.cart.CartData;
+import com.example.coviam.myapp.Model.cart.CartResponseDTO;
+import com.example.coviam.myapp.Model.merchant.MerchantDto;
+import com.example.coviam.myapp.Model.product.ProductDto;
 import com.example.coviam.myapp.network.ProjectAPI;
 import com.example.coviam.myapp.R;
 
@@ -32,7 +33,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductDetailActivity extends AppCompatActivity implements MerchantAdapter.IAdapterCommunicator {
+public class ProductDetailActivity extends AppCompatActivity  {
     //IProductAPI mIProductAPI;
 
     Long productID;
@@ -47,8 +48,6 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
     TextView textViewName, textViewPrice, description, merchantName, rating, productPrice, quantity;
     Button cart, buynow;
     RecyclerView recyclerview;
-    MerchantAdapter merchantAdapter;
-    List<MerchantDto> merchantlist;
     EditText quantityEntry;
 
 
@@ -57,14 +56,20 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
         final Intent intent = getIntent();
-        merchantlist = new ArrayList<>();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        recyclerview = (RecyclerView) findViewById(R.id.recycler_view1);
-        recyclerview.setLayoutManager(new GridLayoutManager(ProductDetailActivity.this, 1));
-
+        //recyclerview = (RecyclerView) findViewById(R.id.recycler_view1);
+        //recyclerview.setLayoutManager(new GridLayoutManager(ProductDetailActivity.this, 1));
+        RelativeLayout productFromOtherMerchants= findViewById(R.id.other_merchant);
         Button addcart = findViewById(R.id.bt_cart);
         Button buynow = findViewById(R.id.bt_buynow);
-        Button addtocart = findViewById(R.id.bt_addtocart);
+
+        productFromOtherMerchants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //get product from other merchants here
+            }
+        });
+
         final TextView textViewName = findViewById(R.id.name_tag);
         final TextView textViewPrice = findViewById(R.id.price_tag);
         final TextView description = findViewById(R.id.description_tag);
@@ -73,8 +78,8 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         quantityEntry = findViewById(R.id.quantity_tag2);
 
 
-        merchantAdapter = new MerchantAdapter(merchantlist, this);
-        recyclerview.setAdapter(merchantAdapter);
+
+        //recyclerview.setAdapter(merchantAdapter);
         projectApi = LoginController.getInstance().getProductClient().create(ProjectAPI.class);
         productID = intent.getLongExtra("productID", 0);
         productName = intent.getStringExtra("productName");
@@ -89,22 +94,15 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
             public void onResponse(Call<ProductDto> call, Response<ProductDto> response) {
 
 
-                if (response.body() != null) {
-                    textViewName.setText("NAME:" + response.body().getProductName());
+                if(response.body()!=null) {
+                    textViewName.setText("Name: " + response.body().getProductName());
                     productDto.setProductID(response.body().getProductID());
-
                     productDto.setProductName(response.body().getProductName());
-
-                    textViewPrice.setText("PRICE:" + response.body().getProductPrice() + "");
-
+                    textViewPrice.setText("Price: " + response.body().getProductPrice() + "");
                     productDto.setProductPrice(response.body().getProductPrice());
-
                     description.setText(response.body().getProductDescription());
-
                     productDto.setMerchantID(response.body().getMerchantID());
-
-                    merchantName.setText("MERCHANT:" + response.body().getMerchantName());
-
+                    merchantName.setText("Merchant: " + response.body().getMerchantName());
                     Glide.with(ProductDetailActivity.this).load(response.body().getProductImgUrl()).into(imageView);
                 }
 
@@ -123,19 +121,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         });
 
 
-        Call<List<MerchantDto>> userCall1 = projectApi.getMerchantsByPid(productID);
-        userCall1.enqueue(new Callback<List<MerchantDto>>() {
-            @Override
-            public void onResponse(Call<List<MerchantDto>> call, Response<List<MerchantDto>> response) {
-                merchantlist.addAll(response.body());
-                merchantAdapter.notifyDataSetChanged();
-            }
 
-            @Override
-            public void onFailure(Call<List<MerchantDto>> call, Throwable t) {
-                Toast.makeText(ProductDetailActivity.this, "No merchants to display", Toast.LENGTH_LONG).show();
-            }
-        });
 
 
         buynow.setOnClickListener(new View.OnClickListener() {
@@ -143,17 +129,10 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
             public void onClick(View v) {
                 Intent intent = getIntent();
                 intent.putExtra("pid", productID);
-
                 intent.putExtra("mid", productDto.getMerchantID());
-
                 System.out.println("QTY" + quantityEntry.getText().toString());
-
                 intent.putExtra("qty", quantityEntry.getText().toString());
-
-
                 intent.putExtra("price", productDto.getProductPrice());
-
-
                 projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
                 addToCart();
 
@@ -164,7 +143,6 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         addcart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
                 addToCart1();
             }
@@ -260,8 +238,5 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
 
     }
 
-    @Override
-    public void addToCartFromAdapter() {
-        addToCart1();
-    }
+
 }

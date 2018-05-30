@@ -19,6 +19,7 @@
         android:layout_below="@+id/my_toolbar" />
 
     <Button
+        android:layout_below="@+id/recycler2_view"
         android:id="@+id/check_out"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
