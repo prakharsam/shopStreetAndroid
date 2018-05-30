@@ -13,7 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.coviam.myapp.Model.GetItemRequest;
+import com.example.coviam.myapp.Model.products.GetItemRequest;
 import com.example.coviam.myapp.R;
 
 import java.util.List;

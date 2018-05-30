@@ -13,10 +13,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.coviam.myapp.Adapter.CategoryAdapter;
-import com.example.coviam.myapp.Model.Categorymodel;
+import com.example.coviam.myapp.Model.category.Categorymodel;
 import com.example.coviam.myapp.R;
 
 import java.util.ArrayList;

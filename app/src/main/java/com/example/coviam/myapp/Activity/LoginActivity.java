@@ -12,7 +12,7 @@ import android.widget.Toast;
 import com.example.coviam.myapp.network.LoginController;
 import com.example.coviam.myapp.network.ProjectAPI;
 import com.example.coviam.myapp.R;
-import com.example.coviam.myapp.Model.ResponseFromUser;
+import com.example.coviam.myapp.Model.authentication.ResponseFromUser;
 
 import retrofit2.Call;
 import retrofit2.Callback;
