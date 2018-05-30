@@ -1,5 +1,6 @@
 package com.example.coviam.myapp.Activity;
 
+import android.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,7 @@ public class MerchantActivity extends AppCompatActivity implements MerchantAdapt
     MerchantAdapter merchantAdapter;
     List<MerchantDto> merchantlist;
     ProjectAPI projectApi;
+    private AlertDialog alertDialog = new AlertDialog.Builder(MerchantActivity.this).create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,13 +41,20 @@ public class MerchantActivity extends AppCompatActivity implements MerchantAdapt
         userCall1.enqueue(new Callback<List<MerchantDto>>() {
             @Override
             public void onResponse(Call<List<MerchantDto>> call, Response<List<MerchantDto>> response) {
-                merchantlist.addAll(response.body());
-                merchantAdapter.notifyDataSetChanged();
+                if (null != response.body()) {
+                    merchantlist.addAll(response.body());
+                    merchantAdapter.notifyDataSetChanged();
+                } else {
+                    alertDialog.setTitle("OOps!!");
+                    alertDialog.setMessage("No merchants For this product");
+                    alertDialog.show();
+                }
             }
-
             @Override
             public void onFailure(Call<List<MerchantDto>> call, Throwable t) {
-                Toast.makeText(MerchantActivity.this, "No merchants to display", Toast.LENGTH_LONG).show();
+                alertDialog.setTitle("OOps!!");
+                alertDialog.setMessage("Something Went Wrong .Try after sometime");
+                alertDialog.show();
             }
         });
     }

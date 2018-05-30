@@ -1,5 +1,6 @@
 package com.example.coviam.myapp.Activity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -35,13 +36,16 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class ProductDetailActivity extends AppCompatActivity {
-    //IProductAPI mIProductAPI;
+
 
     Long productID;
-    ProjectAPI projectApi, projectApi1;
+    ProjectAPI projectApi;
     String merchantname, imgUrl, productName;
     Long merchantId;
     Double price;
+    boolean flag=true;
+
+    private AlertDialog alertDialog = new AlertDialog.Builder(ProductDetailActivity.this).create();
 
     SearchDto productDto = new SearchDto();
     MerchantDto merchantDto;
@@ -52,6 +56,7 @@ public class ProductDetailActivity extends AppCompatActivity {
     MerchantAdapter merchantAdapter;
     List<MerchantDto> merchantlist;
     EditText quantityEntry;
+
 
 
     @Override
@@ -83,6 +88,24 @@ public class ProductDetailActivity extends AppCompatActivity {
         price = intent.getDoubleExtra("productPrice", 0.0);
         merchantId = intent.getLongExtra("merchantID", 0);
         imgUrl = intent.getStringExtra("ImgUrl");
+
+
+        addcart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                flag=false;
+                addToCart();
+            }
+        });
+
+        buynow.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                flag=true;
+                addToCart();
+            }
+        });
 
         Call<ProductDto> userCall = projectApi.getProductById(productID);
         userCall.enqueue(new Callback<ProductDto>() {
@@ -148,16 +171,28 @@ public class ProductDetailActivity extends AppCompatActivity {
         Call<CartResponseDTO> call = projectApi.addToCartApi(new CartData(userid, pid, qty, mid, price));
         call.enqueue(new Callback<CartResponseDTO>() {
             @Override
-            public void onResponse(Call<CartResponseDTO> call, Response<CartResponseDTO> response) {
-                if (response.body().getSuccess()) {
-                    progressDialog.dismiss();
-                    Intent displayByCategory = new Intent(ProductDetailActivity.this, CartPageActivity.class);
-                    startActivity(displayByCategory);
+            public void onResponse(Call<CartResponseDTO> call, Response<CartResponseDTO> response)
 
-                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
-                } else {
-                    progressDialog.dismiss();
-                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+            {
+                if(null !=response.body()) {
+                    if (response.body().getSuccess()) {
+                        progressDialog.dismiss();
+                                if(flag){
+                        Intent displayByCategory = new Intent(ProductDetailActivity.this, CartPageActivity.class);
+                        startActivity(displayByCategory);}
+                    } else {
+                        progressDialog.dismiss();
+                        alertDialog.setTitle("OOps!!");
+                        alertDialog.setMessage("Nothing to show");
+                        alertDialog.show();
+                    }
+                }
+
+                else
+                {
+                    alertDialog.setTitle("OOps!!");
+                    alertDialog.setMessage("Something went  wrong .Try after some time");
+                    alertDialog.show();
                 }
             }
 
