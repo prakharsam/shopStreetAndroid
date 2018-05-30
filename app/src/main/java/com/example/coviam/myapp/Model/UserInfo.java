@@ -1,10 +1,10 @@
-package com.example.coviam.myapp;
+package com.example.coviam.myapp.Model;
 
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-    public class User {
+    public class UserInfo {
 
         @SerializedName("userName")
         @Expose
@@ -26,7 +26,7 @@ import com.google.gson.annotations.SerializedName;
             return username;
         }
 
-        public User(String username, String password, String email, String address, String name) {
+        public UserInfo(String username, String password, String email, String address, String name) {
             this.username = username;
             this.password = password;
             this.email = email;

@@ -1,4 +1,4 @@
-package com.example.coviam.myapp;
+package com.example.coviam.myapp.network;
 
 import android.app.Application;
 
@@ -45,7 +45,7 @@ public class LoginController extends Application {
     public Retrofit getProductClient() {
         if (null == retrofitProduct) {
             OkHttpClient client = new OkHttpClient.Builder().build();
-            // Set the base url
+
 
             retrofitProduct = new Retrofit.Builder()
                     .baseUrl("http://10.177.1.131:8080/product/")
@@ -60,7 +60,6 @@ public class LoginController extends Application {
     public Retrofit getClient() {
         if (null == retrofitcart) {
             OkHttpClient client = new OkHttpClient.Builder().build();
-            // Set the base url
 
             retrofitcart = new Retrofit.Builder()
                     .baseUrl("http://10.177.2.31:4000/v1/cart/")
@@ -74,7 +73,7 @@ public class LoginController extends Application {
     public Retrofit getOrderHistoryClient() {
         if (null == retrofitForOrderHistory) {
             OkHttpClient client = new OkHttpClient.Builder().build();
-            // Set the base url
+
 
             retrofitForOrderHistory = new Retrofit.Builder()
                     .baseUrl("http://10.177.2.31:3000/v1/oms/")
@@ -88,7 +87,7 @@ public class LoginController extends Application {
     public Retrofit getSearchClient() {
         if (null == retrofitsearch) {
             OkHttpClient client = new OkHttpClient.Builder().build();
-            // Set the base url
+
 
             retrofitsearch = new Retrofit.Builder()
                     .baseUrl("http://10.177.1.106:8090/")

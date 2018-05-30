@@ -1,16 +1,12 @@
-package com.example.coviam.myapp;
+package com.example.coviam.myapp.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -21,10 +17,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.coviam.myapp.Adapter.MerchantAdapter;
-import com.example.coviam.myapp.Adapter.ProductAdapter;
+import com.example.coviam.myapp.network.LoginController;
 import com.example.coviam.myapp.Model.CartData;
 import com.example.coviam.myapp.Model.CartResponseDTO;
 import com.example.coviam.myapp.Model.MerchantDto;
+import com.example.coviam.myapp.ProductDto;
+import com.example.coviam.myapp.network.ProjectAPI;
+import com.example.coviam.myapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +36,11 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
     //IProductAPI mIProductAPI;
 
     Long productID;
-    ProjectAPI projectApi;
+    ProjectAPI projectApi ,projectApi1;
+    String merchantname,imgUrl,productName;
+    Long merchantId;
+    Double price;
+
     ProductDto productDto = new ProductDto();
     MerchantDto merchantDto;
     ImageView imageView;
@@ -53,7 +56,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
-        Intent intent = getIntent();
+        final Intent intent = getIntent();
         merchantlist = new ArrayList<>();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         recyclerview = (RecyclerView) findViewById(R.id.recycler_view1);
@@ -61,45 +64,61 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
 
         Button addcart = findViewById(R.id.bt_cart);
         Button buynow = findViewById(R.id.bt_buynow);
-        Button addtocart=findViewById(R.id.bt_addtocart);
+        Button addtocart = findViewById(R.id.bt_addtocart);
         final TextView textViewName = findViewById(R.id.name_tag);
         final TextView textViewPrice = findViewById(R.id.price_tag);
         final TextView description = findViewById(R.id.description_tag);
         final ImageView imageView = findViewById(R.id.product_image);
         final TextView merchantName = findViewById(R.id.merchant_name_tag);
-        final EditText quantityEntry = findViewById(R.id.quantity_tag2);
+        quantityEntry = findViewById(R.id.quantity_tag2);
 
 
         merchantAdapter = new MerchantAdapter(merchantlist, this);
         recyclerview.setAdapter(merchantAdapter);
         projectApi = LoginController.getInstance().getProductClient().create(ProjectAPI.class);
         productID = intent.getLongExtra("productID", 0);
+        productName=intent.getStringExtra("productName");
+        merchantname=intent.getStringExtra("merchantName");
+        price = intent.getDoubleExtra("productPrice",0.0);
+        merchantId=intent.getLongExtra("merchantID",0);
+        imgUrl=intent.getStringExtra("ImgUrl");
+
         Call<ProductDto> userCall = projectApi.getproductbyid(productID);
         userCall.enqueue(new Callback<ProductDto>() {
             @Override
             public void onResponse(Call<ProductDto> call, Response<ProductDto> response) {
-                textViewName.setText("NAME:"+response.body().getProductName());
-                productDto.setProductID(response.body().getProductID());
 
-                productDto.setProductName(response.body().getProductName());
 
-                textViewPrice.setText("PRICE:"+response.body().getProductPrice() + "");
+                if(response.body()!=null) {
+                    textViewName.setText("NAME:" + response.body().getProductName());
+                    productDto.setProductID(response.body().getProductID());
 
-                productDto.setProductPrice(response.body().getProductPrice());
+                    productDto.setProductName(response.body().getProductName());
 
-                description.setText(response.body().getProductDescription());
+                    textViewPrice.setText("PRICE:" + response.body().getProductPrice() + "");
 
-                productDto.setMerchantID(response.body().getMerchantID());
+                    productDto.setProductPrice(response.body().getProductPrice());
 
-                merchantName.setText("MERCHANT:"+response.body().getMerchantName());
+                    description.setText(response.body().getProductDescription());
 
-                Glide.with(ProductDetailActivity.this).load(response.body().getProductImgUrl()).into(imageView);
+                    productDto.setMerchantID(response.body().getMerchantID());
+
+                    merchantName.setText("MERCHANT:" + response.body().getMerchantName());
+
+                    Glide.with(ProductDetailActivity.this).load(response.body().getProductImgUrl()).into(imageView);
+                }
+
 
             }
 
             @Override
             public void onFailure(Call<ProductDto> call, Throwable t) {
-                Toast.makeText(ProductDetailActivity.this, "No description to display", Toast.LENGTH_LONG).show();
+
+                textViewName.setText(productName);
+                textViewPrice.setText(String.valueOf(price));
+                merchantName.setText(merchantname);
+                Glide.with(ProductDetailActivity.this).load(imgUrl).into(imageView);
+
             }
         });
 
@@ -119,7 +138,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         });
 
 
-        addcart.setOnClickListener(new View.OnClickListener() {
+        buynow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = getIntent();
@@ -142,38 +161,16 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
             }
         });
 
-//        addtocart.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent intent = getIntent();
-//
-//                intent.putExtra("pid", productID);
-//
-//                intent.putExtra("mid", productDto.getMerchantID());
-//
-//                System.out.println("QTY" + quantityEntry.getText().toString());
-//
-//                intent.putExtra("qty", quantityEntry.getText().toString());
-//
-//
-//                intent.putExtra("price", productDto.getProductPrice());
-//
-//
-//                projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
-//                addToCart();
-//
-//            }
-//        });
 
-//        buynow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
-//                addToCart();
-//            }
-//        });
+
+        addcart.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
+                addToCart1();
+            }
+       });
 
     }
 
@@ -221,30 +218,52 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
             }
         });
 
-//        buynow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent intent = getIntent();
-//
-//                intent.putExtra("pid", productID);
-//
-//                intent.putExtra("mid", productDto.getMerchantID());
-//
-//                System.out.println("QTY" + quantityEntry.getText().toString());
-//
-//                intent.putExtra("qty", quantityEntry.getText().toString());
-//
-//
-//                intent.putExtra("price", productDto.getProductPrice());
-//
-//
-//                projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
-//                addToCart();
-//
-//            }
-//        });
+
     }
 
+    private void addToCart1() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
 
+        SharedPreferences preferences = getSharedPreferences("userData", MODE_PRIVATE);
+        Long userid = preferences.getLong("id", -1);
+
+
+        String quantity = quantityEntry.getText().toString();
+
+        long qty;
+        if (!quantity.equals("")) {
+            qty = Long.parseLong(quantity);
+        } else {
+            qty = 1;
+        }
+
+
+        Call<CartResponseDTO> call = projectApi.addToCartApi(new CartData(userid, this.productID, qty, this.merchantId, this.price));
+        call.enqueue(new Callback<CartResponseDTO>() {
+            @Override
+            public void onResponse(Call<CartResponseDTO> call, Response<CartResponseDTO> response) {
+                if (response.body().getSuccess()) {
+                    progressDialog.dismiss();
+
+
+                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Call<CartResponseDTO> call, Throwable t) {
+                progressDialog.dismiss();
+            }
+        });
+
+    }
+
+    @Override
+    public void addtocartfromadapter() {
+        addToCart1();
+    }
 }

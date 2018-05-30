@@ -1,10 +1,9 @@
-package com.example.coviam.myapp;
+package com.example.coviam.myapp.Activity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -17,12 +16,15 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.coviam.myapp.Adapter.CartAdapter;
+import com.example.coviam.myapp.network.LoginController;
 import com.example.coviam.myapp.Model.CheckoutRequestModel;
 import com.example.coviam.myapp.Model.CheckoutResponseModel;
 import com.example.coviam.myapp.Model.DelRequestModel;
 import com.example.coviam.myapp.Model.DelResponseModel;
 import com.example.coviam.myapp.Model.GetCartResponse;
 import com.example.coviam.myapp.Model.GetItemRequest;
+import com.example.coviam.myapp.network.ProjectAPI;
+import com.example.coviam.myapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -139,32 +141,9 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
         });
 
 
-        // public void deleteItem(final int position) {
-        //   final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.show();
-//      //  Call<Boolean> call = mIProductAPI.deleteCart(productlist.get(position).getCartid(),productlist.get(position).getProductId(),productlist.get(position).getMid());
-//       // call.enqueue(new Callback<Boolean>() {
-//            @Override
-//            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-//                if (response.code() == 200 && response.body() == true) {
-//                    productlist.remove(position);
-//                    cartAdapter.notifyItemRemoved(position);
-//                    progressDialog.dismiss();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(Call<Boolean> call, Throwable t) {
-//                progressDialog.dismiss();
-//                Toast.makeText(CartPageActivity.this, "Failed to Delete", Toast.LENGTH_LONG);
-//            }
-//        });
-//    }
 
-//    @Override
-//    public void delete(int position) {
-//
-//    }
+        progressDialog.show();
+
     }
 
     @Override
@@ -196,21 +175,20 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.menuresource, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_cart) {
-            //TODO handle click
+
+         if(id== R.id.action_home) {
+            Intent displayByCategory = new Intent(CartPageActivity.this, DisplayByCategoryActivity.class);
+            startActivity(displayByCategory);
             return true;
         }
 

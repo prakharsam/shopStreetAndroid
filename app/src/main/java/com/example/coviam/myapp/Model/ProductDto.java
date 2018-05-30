@@ -3,30 +3,36 @@ package com.example.coviam.myapp.Model;
 public class ProductDto {
 
 
-        private long productId;
-        private String productCategoryName;
-        private String productName;
-        private String productImgUrl;
-        private String productDescription;
-        private String productBrandName;
+    private long productID;
+    private String productName;
+    private String productImgUrl;
+    private Double productPrice;
+    private long merchantID;
+    private String productMerchantName;
+    private int merchantCount;
+
+    @Override
+    public String toString() {
+        return "ProductDto{" +
+                "productID=" + productID +
+                ", productName='" + productName + '\'' +
+                ", productImgUrl='" + productImgUrl + '\'' +
+                ", productPrice=" + productPrice +
+                ", merchantID=" + merchantID +
+                ", productMerchantName='" + productMerchantName + '\'' +
+                ", merchantCount=" + merchantCount +
+                '}';
+    }
 
     public ProductDto() {
     }
 
-    public long getProductId() {
-        return productId;
+    public long getProductID() {
+        return productID;
     }
 
-    public void setProductId(long productId) {
-        this.productId = productId;
-    }
-
-    public String getProductCategoryName() {
-        return productCategoryName;
-    }
-
-    public void setProductCategoryName(String productCategoryName) {
-        this.productCategoryName = productCategoryName;
+    public void setProductID(long productID) {
+        this.productID = productID;
     }
 
     public String getProductName() {
@@ -45,20 +51,36 @@ public class ProductDto {
         this.productImgUrl = productImgUrl;
     }
 
-    public String getProductDescription() {
-        return productDescription;
+    public double getProductPrice() {
+        return productPrice;
     }
 
-    public void setProductDescription(String productDescription) {
-        this.productDescription = productDescription;
+    public void setProductPrice(double productPrice) {
+        this.productPrice = productPrice;
     }
 
-    public String getProductBrandName() {
-        return productBrandName;
+    public long getMerchantID() {
+        return merchantID;
     }
 
-    public void setProductBrandName(String productBrandName) {
-        this.productBrandName = productBrandName;
+    public void setMerchantID(long merchantID) {
+        this.merchantID = merchantID;
+    }
+
+    public String getProductMerchantName() {
+        return productMerchantName;
+    }
+
+    public void setProductMerchantName(String productMerchantName) {
+        this.productMerchantName = productMerchantName;
+    }
+
+    public int getMerchantCount() {
+        return merchantCount;
+    }
+
+    public void setMerchantCount(int merchantCount) {
+        this.merchantCount = merchantCount;
     }
 }
 

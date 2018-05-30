@@ -1,6 +1,5 @@
 package com.example.coviam.myapp.Adapter;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -11,14 +10,11 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.coviam.myapp.Model.MerchantDto;
-import com.example.coviam.myapp.ProductDetailActivity;
 import com.example.coviam.myapp.R;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
-public class MerchantAdapter extends RecyclerView.Adapter<MerchantAdapter.ViewHolder>{
+public class MerchantAdapter extends RecyclerView.Adapter<MerchantAdapter.ViewHolder>  {
         private List<MerchantDto> mMerchant;
         private IAdapterCommunicator iAdapterCommunicator;
 
@@ -31,7 +27,7 @@ public class MerchantAdapter extends RecyclerView.Adapter<MerchantAdapter.ViewHo
         @NonNull
         @Override
         public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-            // Input the layout id
+
             View view =
                     LayoutInflater.from(parent.getContext()).inflate(R.layout.merchant_card_view, parent, false);
             return new ViewHolder(view);
@@ -45,16 +41,28 @@ public class MerchantAdapter extends RecyclerView.Adapter<MerchantAdapter.ViewHo
             holder.price.setText(merchantDto.getProductPrice()+"");
             holder.quantity.setText(merchantDto.getProductStock()+"");
             holder.rating.setText(merchantDto.getWeightedFactor()+"");
+            holder.btaddtocart.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   iAdapterCommunicator.addtocartfromadapter();
+                }
+            });
 
             }
 
         @Override
         public int getItemCount() {
-            // Set the list count
+
             return mMerchant.size();
         }
 
-        class ViewHolder extends RecyclerView.ViewHolder {
+
+
+    public static interface IAdapterCommunicator {
+        void addtocartfromadapter();
+    }
+
+    class ViewHolder extends RecyclerView.ViewHolder {
             
             Button btaddtocart;
             TextView merchantName;
@@ -75,9 +83,7 @@ public class MerchantAdapter extends RecyclerView.Adapter<MerchantAdapter.ViewHo
             }
         }
 
-        public static interface IAdapterCommunicator {
-            //void deleteItem(int position);
-        }
+
     }
 
 

@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.coviam.myapp.ProductDetailActivity;
+import com.example.coviam.myapp.Activity.ProductDetailActivity;
 import com.example.coviam.myapp.ProductDto;
 import com.example.coviam.myapp.R;
 
@@ -38,7 +38,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ProductViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ProductViewHolder holder, final int position) {
         final ProductDto productDto = mProductDto.get(position);
         holder.textViewTitle.setText(productDto.getProductName());
         holder.textViewPrice.setText("₹"+String.valueOf(productDto.getProductPrice()));
@@ -46,10 +46,24 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 Long productID = productDto.getProductID();
-                Intent productDisplay = new Intent(holder.parent.getContext(), ProductDetailActivity.class);
-                productDisplay.putExtra("productID", productID);
-                holder.parent.getContext().startActivity(productDisplay);
+                String productName=productDto.getProductName();
+                String ImgUrl=productDto.getProductImgUrl();
+                String merchantName=productDto.getMerchantName();
+                Double price=productDto.getProductPrice();
+                Long merchantID=productDto.getMerchantID();
+
+
+                Intent intent = new Intent(holder.parent.getContext(), ProductDetailActivity.class);
+                intent.putExtra("productID", productID);
+                intent.putExtra("productName",productName);
+                intent.putExtra("merchantName",merchantName);
+                intent.putExtra("productPrice",price);
+                intent.putExtra("ImgUrl",ImgUrl);
+                intent.putExtra("merchantID",merchantID);
+
+                holder.parent.getContext().startActivity(intent);
             }
         });
 

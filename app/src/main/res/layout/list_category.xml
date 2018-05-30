@@ -8,12 +8,13 @@
             android:id="@+id/cv_parent"
             android:layout_width="wrap_content"
             android:layout_height="200dp"
+            android:background="@drawable/customborder1"
             android:layout_margin="5dp">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="#ffffff"
+
                 android:padding="8dp">
 
                 <ImageView

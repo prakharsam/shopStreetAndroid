@@ -1,9 +1,8 @@
-package com.example.coviam.myapp;
+package com.example.coviam.myapp.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,18 +13,16 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coviam.myapp.Adapter.CategoryAdapter;
 import com.example.coviam.myapp.Model.Categorymodel;
+import com.example.coviam.myapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class DisplayByCategory extends AppCompatActivity {
+public class DisplayByCategoryActivity extends AppCompatActivity {
 
     private Toolbar mTopToolbar;
     RecyclerView recyclerview;
@@ -33,6 +30,12 @@ public class DisplayByCategory extends AppCompatActivity {
     List<Categorymodel> productlist;
 
     Menu customMenu;
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        moveTaskToBack(true);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,27 +48,22 @@ public class DisplayByCategory extends AppCompatActivity {
         recyclerview.setLayoutManager(new GridLayoutManager(this, 2));
         SharedPreferences editor = getSharedPreferences("userData", MODE_PRIVATE);
         if (!editor.contains("id")) {
-            Intent intent = new Intent(DisplayByCategory.this, LoginActivity.class);
+            Intent intent = new Intent(DisplayByCategoryActivity.this, LoginActivity.class);
             startActivity(intent);
+
+           Button orderHistory=findViewById(R.id.bt_orderHistory);
+
+            orderHistory.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent  = new Intent(DisplayByCategoryActivity.this,OrderHistoryActivity.class);
+                    startActivity(intent);
+                }
+            });
+
         }
 
-        Button orderhistory = findViewById(R.id.bt_orderhistory);
-        orderhistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(DisplayByCategory.this, OrderHistoryActivity.class);
-                startActivity(intent);
-            }
-        });
-/*
 
-
-        SharedPreferences.Editor editors = getSharedPreferences("userData", MODE_PRIVATE).edit();
-        editors.clear();
-        editors.apply();
-        Intent intent=new Intent(DisplayByCategory.this, LoginActivity.class);
-        startActivity(intent);
-*/
 
         productlist.add(
                 new Categorymodel(
@@ -87,7 +85,7 @@ public class DisplayByCategory extends AppCompatActivity {
         productlist.add(
                 new Categorymodel(
                         R.drawable.tv, "TV", 6));
-        categoryAdapter = new CategoryAdapter(DisplayByCategory.this, productlist);
+        categoryAdapter = new CategoryAdapter(DisplayByCategoryActivity.this, productlist);
         recyclerview.setAdapter(categoryAdapter);
 
         mTopToolbar = (Toolbar) findViewById(R.id.toolbar1);
@@ -97,7 +95,7 @@ public class DisplayByCategory extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
           getMenuInflater().inflate(R.menu.menuresource, menu);
         return true;
 
@@ -105,31 +103,34 @@ public class DisplayByCategory extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+
         if (id == R.id.action_cart) {
-            Intent displayByCategory = new Intent(DisplayByCategory.this, CartPageActivity.class);
+            Intent displayByCategory = new Intent(DisplayByCategoryActivity.this, CartPageActivity.class);
             startActivity(displayByCategory);
             return true;
         } else if (id == R.id.action_search) {
-            Intent intent = new Intent(DisplayByCategory.this, ProductListActivity.class);
-            ;
+
+            Intent intent = new Intent(DisplayByCategoryActivity.this, ProductListActivity.class);
             intent.putExtra("isSearch", true);
             intent.putExtra("searchName", ((EditText) findViewById(R.id.et_search)).getText().toString());
             startActivity(intent);
-            Toast.makeText(DisplayByCategory.this, "Action searched clicked", Toast.LENGTH_LONG).show();
+
 
         } else if (id == R.id.action_logout) {
             SharedPreferences.Editor editors = getSharedPreferences("userData", MODE_PRIVATE).edit();
             editors.clear();
             editors.apply();
-            Intent intent = new Intent(DisplayByCategory.this, LoginActivity.class);
+            Intent intent = new Intent(DisplayByCategoryActivity.this, LoginActivity.class);
             startActivity(intent);
+        }else if(id== R.id.action_home) {
+            Intent displayByCategory = new Intent(DisplayByCategoryActivity.this, DisplayByCategoryActivity.class);
+            startActivity(displayByCategory);
+            return true;
         }
+
 
         return super.onOptionsItemSelected(item);
     }

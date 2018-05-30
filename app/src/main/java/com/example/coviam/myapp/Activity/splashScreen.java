@@ -1,8 +1,10 @@
-package com.example.coviam.myapp;
+package com.example.coviam.myapp.Activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+
+import com.example.coviam.myapp.R;
 
 public class splashScreen extends Activity {
 
@@ -18,8 +20,8 @@ public class splashScreen extends Activity {
             {
                 try
                 {
-                    sleep(5000);
-                    Intent i =new Intent(splashScreen.this,DisplayByCategory.class);
+                    sleep(2000);
+                    Intent i =new Intent(splashScreen.this,DisplayByCategoryActivity.class);
                     startActivity(i);
                     finish();
                 }
