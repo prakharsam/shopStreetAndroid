@@ -30,7 +30,7 @@ public class OrderHistoryAdapterHoldingOrders extends RecyclerView.Adapter {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
 
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.cardviewoforderhistory, null);
+        View view = inflater.inflate(R.layout.cardviewoforderhistory, parent, false);
         return new OrderHistoryViewHolder(view);
 
     }

@@ -14,7 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.coviam.myapp.network.LoginController;
-import com.example.coviam.myapp.Model.Categorymodel;
+import com.example.coviam.myapp.Model.CategoryModel;
 import com.example.coviam.myapp.Activity.ProductListActivity;
 import com.example.coviam.myapp.network.ProjectAPI;
 import com.example.coviam.myapp.R;
@@ -25,10 +25,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Produc
 
     private Context mcontex;
     private ProjectAPI projectApi;
-    private List<Categorymodel> mCategoryModel;
+    private List<CategoryModel> mCategoryModel;
 
 
-    public CategoryAdapter(Context mcontex, List<Categorymodel> productmodel) {
+    public CategoryAdapter(Context mcontex, List<CategoryModel> productmodel) {
         this.mcontex = mcontex;
         mCategoryModel = productmodel;
     }
@@ -44,7 +44,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Produc
     @Override
     public void onBindViewHolder(@NonNull final ProductViewHolder holder, int position) {
         projectApi = LoginController.getInstance().getLoginClient().create(ProjectAPI.class); //doubt
-        final Categorymodel categorymodel = mCategoryModel.get(position);
+        final CategoryModel categorymodel = mCategoryModel.get(position);
         holder.textViewTitle.setText(categorymodel.getName());
         holder.imageView.setImageDrawable(ContextCompat.getDrawable(holder.imageView.getContext(),
                 categorymodel.getImageId()));

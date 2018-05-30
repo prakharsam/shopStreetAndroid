@@ -36,8 +36,8 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
     //IProductAPI mIProductAPI;
 
     Long productID;
-    ProjectAPI projectApi ,projectApi1;
-    String merchantname,imgUrl,productName;
+    ProjectAPI projectApi, projectApi1;
+    String merchantname, imgUrl, productName;
     Long merchantId;
     Double price;
 
@@ -77,19 +77,19 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         recyclerview.setAdapter(merchantAdapter);
         projectApi = LoginController.getInstance().getProductClient().create(ProjectAPI.class);
         productID = intent.getLongExtra("productID", 0);
-        productName=intent.getStringExtra("productName");
-        merchantname=intent.getStringExtra("merchantName");
-        price = intent.getDoubleExtra("productPrice",0.0);
-        merchantId=intent.getLongExtra("merchantID",0);
-        imgUrl=intent.getStringExtra("ImgUrl");
+        productName = intent.getStringExtra("productName");
+        merchantname = intent.getStringExtra("merchantName");
+        price = intent.getDoubleExtra("productPrice", 0.0);
+        merchantId = intent.getLongExtra("merchantID", 0);
+        imgUrl = intent.getStringExtra("ImgUrl");
 
-        Call<ProductDto> userCall = projectApi.getproductbyid(productID);
+        Call<ProductDto> userCall = projectApi.getProductById(productID);
         userCall.enqueue(new Callback<ProductDto>() {
             @Override
             public void onResponse(Call<ProductDto> call, Response<ProductDto> response) {
 
 
-                if(response.body()!=null) {
+                if (response.body() != null) {
                     textViewName.setText("NAME:" + response.body().getProductName());
                     productDto.setProductID(response.body().getProductID());
 
@@ -123,7 +123,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         });
 
 
-        Call<List<MerchantDto>> userCall1 = projectApi.getmerchantsbypid(productID);
+        Call<List<MerchantDto>> userCall1 = projectApi.getMerchantsByPid(productID);
         userCall1.enqueue(new Callback<List<MerchantDto>>() {
             @Override
             public void onResponse(Call<List<MerchantDto>> call, Response<List<MerchantDto>> response) {
@@ -142,7 +142,6 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
             @Override
             public void onClick(View v) {
                 Intent intent = getIntent();
-
                 intent.putExtra("pid", productID);
 
                 intent.putExtra("mid", productDto.getMerchantID());
@@ -162,7 +161,6 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         });
 
 
-
         addcart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -170,7 +168,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
                 projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
                 addToCart1();
             }
-       });
+        });
 
     }
 
@@ -263,7 +261,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
     }
 
     @Override
-    public void addtocartfromadapter() {
+    public void addToCartFromAdapter() {
         addToCart1();
     }
 }

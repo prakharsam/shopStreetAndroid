@@ -37,14 +37,15 @@ public class ProductListActivity extends AppCompatActivity {
     List<ProductDto> productlist;
     List<com.example.coviam.myapp.Model.ProductDto> productlist1;
     boolean boolvariable;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.productlist);
         productlist = new ArrayList<>();
-        productlist1=new ArrayList<>();
+        productlist1 = new ArrayList<>();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        recyclerview = (RecyclerView) findViewById(R.id.recycler_view);
+        recyclerview = findViewById(R.id.recycler_view);
         recyclerview.setHasFixedSize(true);
         recyclerview.setLayoutManager(new GridLayoutManager(this, 2));
         Intent intent = getIntent();
@@ -52,11 +53,11 @@ public class ProductListActivity extends AppCompatActivity {
 
         String name = intent.getStringExtra("searchName");
         boolvariable = intent.getBooleanExtra("isSearch", false);
-        TextView text=findViewById(R.id.searchEditText);
+        TextView text = findViewById(R.id.searchEditText);
         text.setText(name);
         productadapter = new ProductAdapter(this, productlist);
         recyclerview.setAdapter(productadapter);
-        mTopToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mTopToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mTopToolbar);
         if (boolvariable == true) {
 
@@ -66,28 +67,28 @@ public class ProductListActivity extends AppCompatActivity {
             userCall2.enqueue(new Callback<List<com.example.coviam.myapp.Model.ProductDto>>() {
                 @Override
                 public void onResponse(Call<List<com.example.coviam.myapp.Model.ProductDto>> call, Response<List<com.example.coviam.myapp.Model.ProductDto>> response) {
-                   if (null != response.body()) {
-                       productlist1.addAll(response.body());
-                       for (int i = 0; i < response.body().size(); i++) {
-                           com.example.coviam.myapp.Model.ProductDto existingProductDto = response.body().get(i);
-                           ProductDto productDto = new ProductDto();
-                           if (response.body() == null) {
-                               Toast.makeText(ProductListActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                    if (null != response.body()) {
+                        productlist1.addAll(response.body());
+                        for (int i = 0; i < response.body().size(); i++) {
+                            com.example.coviam.myapp.Model.ProductDto existingProductDto = response.body().get(i);
+                            ProductDto productDto = new ProductDto();
+                            if (response.body() == null) {
+                                Toast.makeText(ProductListActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
 
 
-                           } else {
-                               productDto.setProductPrice(existingProductDto.getProductPrice());
-                               productDto.setProductImgUrl(existingProductDto.getProductImgUrl());
-                               productDto.setProductName(existingProductDto.getProductName());
-                               productDto.setProductID(existingProductDto.getProductID());
-                               productDto.setMerchantName(existingProductDto.getProductMerchantName());
-                               System.out.println((productDto.toString()));
-                               productlist.add(productDto);
-                           }
-                       }
-                       productadapter.notifyDataSetChanged();
-                       Toast.makeText(ProductListActivity.this, "Got Products For Searchword", Toast.LENGTH_LONG).show();
-                   }
+                            } else {
+                                productDto.setProductPrice(existingProductDto.getProductPrice());
+                                productDto.setProductImgUrl(existingProductDto.getProductImgUrl());
+                                productDto.setProductName(existingProductDto.getProductName());
+                                productDto.setProductID(existingProductDto.getProductID());
+                                productDto.setMerchantName(existingProductDto.getProductMerchantName());
+                                System.out.println((productDto.toString()));
+                                productlist.add(productDto);
+                            }
+                        }
+                        productadapter.notifyDataSetChanged();
+                        Toast.makeText(ProductListActivity.this, "Got Products For Searchword", Toast.LENGTH_LONG).show();
+                    }
                 }
 
                 @Override
@@ -98,18 +99,17 @@ public class ProductListActivity extends AppCompatActivity {
         } else {
             projectApi = LoginController.getInstance().getProductClient().create(ProjectAPI.class);
 
-            Call<List<ProductDto>> userCall = projectApi.getproductsbycid(categoryId);
+            Call<List<ProductDto>> userCall = projectApi.getProductsByCid(categoryId);
             userCall.enqueue(new Callback<List<ProductDto>>() {
                 @Override
                 public void onResponse(Call<List<ProductDto>> call, Response<List<ProductDto>> response) {
                     productlist.addAll(response.body());
                     productadapter.notifyDataSetChanged();
-                   if(null==response.body())
-                   {
-                      Intent intent = new Intent(ProductListActivity.this,NothingAvailableActivity.class);
-                      startActivity(intent);
+                    if (null == response.body()) {
+                        Intent intent = new Intent(ProductListActivity.this, NothingAvailableActivity.class);
+                        startActivity(intent);
 
-                   }
+                    }
                 }
 
                 @Override
@@ -120,7 +120,6 @@ public class ProductListActivity extends AppCompatActivity {
             });
         }
     }
-
 
 
     @Override
@@ -146,23 +145,20 @@ public class ProductListActivity extends AppCompatActivity {
             Intent displayByCategory = new Intent(ProductListActivity.this, CartPageActivity.class);
             startActivity(displayByCategory);
             return true;
-        }
-        else if (id == R.id.action_search) {
+        } else if (id == R.id.action_search) {
             Intent intent = new Intent(ProductListActivity.this, ProductListActivity.class);
-            ;
             intent.putExtra("isSearch", true);
             intent.putExtra("searchName", ((EditText) findViewById(R.id.searchEditText)).getText().toString());
             startActivity(intent);
             Toast.makeText(ProductListActivity.this, "Action searched clicked", Toast.LENGTH_LONG).show();
 
-        }
-        else if (id == R.id.action_logout) {
+        } else if (id == R.id.action_logout) {
             SharedPreferences.Editor editors = getSharedPreferences("userData", MODE_PRIVATE).edit();
             editors.clear();
             editors.apply();
             Intent intent = new Intent(ProductListActivity.this, LoginActivity.class);
             startActivity(intent);
-        }else if(id== R.id.action_home) {
+        } else if (id == R.id.action_home) {
             Intent displayByCategory = new Intent(ProductListActivity.this, DisplayByCategoryActivity.class);
             startActivity(displayByCategory);
             return true;

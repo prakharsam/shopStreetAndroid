@@ -1,11 +1,11 @@
 package com.example.coviam.myapp.Model;
 
-public class Categorymodel {
+public class CategoryModel {
     private int imageId;
     private String name;
     private long categoryid;
 
-    public Categorymodel(int imageId, String name, int categoryid) {
+    public CategoryModel(int imageId, String name, int categoryid) {
         this.imageId = imageId;
         this.name = name;
         this.categoryid = categoryid;

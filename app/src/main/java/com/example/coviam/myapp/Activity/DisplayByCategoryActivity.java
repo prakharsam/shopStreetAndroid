@@ -13,10 +13,9 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.coviam.myapp.Adapter.CategoryAdapter;
-import com.example.coviam.myapp.Model.Categorymodel;
+import com.example.coviam.myapp.Model.CategoryModel;
 import com.example.coviam.myapp.R;
 
 import java.util.ArrayList;
@@ -27,7 +26,7 @@ public class DisplayByCategoryActivity extends AppCompatActivity {
     private Toolbar mTopToolbar;
     RecyclerView recyclerview;
     CategoryAdapter categoryAdapter;
-    List<Categorymodel> productlist;
+    List<CategoryModel> productlist;
 
     Menu customMenu;
 
@@ -43,6 +42,7 @@ public class DisplayByCategoryActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         productlist = new ArrayList<>();
+        setSupportActionBar((Toolbar) findViewById(R.id.toolbar1));
         recyclerview = (RecyclerView) findViewById(R.id.recycler_view);
         recyclerview.setHasFixedSize(true);
         recyclerview.setLayoutManager(new GridLayoutManager(this, 2));
@@ -66,24 +66,24 @@ public class DisplayByCategoryActivity extends AppCompatActivity {
 
 
         productlist.add(
-                new Categorymodel(
+                new CategoryModel(
                         R.drawable.mobile, "Mobiles", 1));
 
         productlist.add(
-                new Categorymodel(
+                new CategoryModel(
                         R.drawable.footwear, "Footwear", 2));
         productlist.add(
-                new Categorymodel(
+                new CategoryModel(
                         R.drawable.watch, "Watches", 3));
         productlist.add(
-                new Categorymodel(
+                new CategoryModel(
                         R.drawable.clothing, "Clothing", 4));
 
         productlist.add(
-                new Categorymodel(
+                new CategoryModel(
                         R.drawable.laptop, "Laptops", 5));
         productlist.add(
-                new Categorymodel(
+                new CategoryModel(
                         R.drawable.tv, "TV", 6));
         categoryAdapter = new CategoryAdapter(DisplayByCategoryActivity.this, productlist);
         recyclerview.setAdapter(categoryAdapter);
