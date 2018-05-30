@@ -12,6 +12,7 @@ import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -59,12 +60,19 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         final Intent intent = getIntent();
         merchantlist = new ArrayList<>();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
-        recyclerview = (RecyclerView) findViewById(R.id.recycler_view1);
-        recyclerview.setLayoutManager(new GridLayoutManager(ProductDetailActivity.this, 1));
-
+        //recyclerview = (RecyclerView) findViewById(R.id.recycler_view1);
+        //recyclerview.setLayoutManager(new GridLayoutManager(ProductDetailActivity.this, 1));
+        RelativeLayout productFromOtherMerchants= findViewById(R.id.other_merchant);
         Button addcart = findViewById(R.id.bt_cart);
         Button buynow = findViewById(R.id.bt_buynow);
-        Button addtocart = findViewById(R.id.bt_addtocart);
+
+        productFromOtherMerchants.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //get product from other merchants here
+            }
+        });
+
         final TextView textViewName = findViewById(R.id.name_tag);
         final TextView textViewPrice = findViewById(R.id.price_tag);
         final TextView description = findViewById(R.id.description_tag);
@@ -73,8 +81,9 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
         quantityEntry = findViewById(R.id.quantity_tag2);
 
 
+
         merchantAdapter = new MerchantAdapter(merchantlist, this);
-        recyclerview.setAdapter(merchantAdapter);
+        //recyclerview.setAdapter(merchantAdapter);
         projectApi = LoginController.getInstance().getProductClient().create(ProjectAPI.class);
         productID = intent.getLongExtra("productID", 0);
         productName=intent.getStringExtra("productName");
@@ -90,12 +99,12 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
 
 
                 if(response.body()!=null) {
-                    textViewName.setText("NAME:" + response.body().getProductName());
+                    textViewName.setText("Name: " + response.body().getProductName());
                     productDto.setProductID(response.body().getProductID());
 
                     productDto.setProductName(response.body().getProductName());
 
-                    textViewPrice.setText("PRICE:" + response.body().getProductPrice() + "");
+                    textViewPrice.setText("Price: " + response.body().getProductPrice() + "");
 
                     productDto.setProductPrice(response.body().getProductPrice());
 
@@ -103,7 +112,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
 
                     productDto.setMerchantID(response.body().getMerchantID());
 
-                    merchantName.setText("MERCHANT:" + response.body().getMerchantName());
+                    merchantName.setText("Merchant: " + response.body().getMerchantName());
 
                     Glide.with(ProductDetailActivity.this).load(response.body().getProductImgUrl()).into(imageView);
                 }

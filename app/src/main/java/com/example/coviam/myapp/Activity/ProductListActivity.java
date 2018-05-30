@@ -104,12 +104,7 @@ public class ProductListActivity extends AppCompatActivity {
                 public void onResponse(Call<List<ProductDto>> call, Response<List<ProductDto>> response) {
                     productlist.addAll(response.body());
                     productadapter.notifyDataSetChanged();
-                   if(null==response.body())
-                   {
-                      Intent intent = new Intent(ProductListActivity.this,NothingAvailableActivity.class);
-                      startActivity(intent);
 
-                   }
                 }
 
                 @Override
