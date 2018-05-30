@@ -1,4 +1,4 @@
-package com.example.coviam.myapp.Model;
+package com.example.coviam.myapp.Model.authentication;
 
 
 import com.google.gson.annotations.Expose;

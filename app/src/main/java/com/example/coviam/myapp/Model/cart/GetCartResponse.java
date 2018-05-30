@@ -1,4 +1,6 @@
-package com.example.coviam.myapp.Model;
+package com.example.coviam.myapp.Model.cart;
+
+import com.example.coviam.myapp.Model.products.GetItemRequest;
 
 import java.util.List;
 

@@ -1,27 +1,15 @@
-package com.example.coviam.myapp.Model;
+package com.example.coviam.myapp.Model.products;
 
-import com.google.gson.annotations.SerializedName;
+    public class GetItemRequest {
 
-public class CartDto {
-
-
-
-        @SerializedName("cartId")
         private Long cartid;
-        @SerializedName("pid")
         private Long pid;
-        @SerializedName("mid")
         private Long mid;
-
         private Long qty;
-        @SerializedName("price")
         private Double price;
-        @SerializedName("image")
         private String image;
-        @SerializedName("productName")
-        private String productName;
 
-        public CartDto(Long cartid, Long pid, Long mid, Long qty, Double price, String image, String productName) {
+        public GetItemRequest(Long cartid, Long pid, Long mid, Long qty, Double price, String image, String productName) {
             this.cartid = cartid;
             this.pid = pid;
             this.mid = mid;
@@ -30,6 +18,8 @@ public class CartDto {
             this.image = image;
             this.productName = productName;
         }
+
+        private String productName;
 
         public Long getCartid() {
             return cartid;
@@ -86,5 +76,6 @@ public class CartDto {
         public void setProductName(String productName) {
             this.productName = productName;
         }
-    }
 
+
+}

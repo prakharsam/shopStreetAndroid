@@ -11,8 +11,8 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.coviam.myapp.network.LoginController;
-import com.example.coviam.myapp.Model.ResponseFromUser;
-import com.example.coviam.myapp.Model.UserInfo;
+import com.example.coviam.myapp.Model.authentication.ResponseFromUser;
+import com.example.coviam.myapp.Model.authentication.UserInfo;
 import com.example.coviam.myapp.network.ProjectAPI;
 import com.example.coviam.myapp.R;
 

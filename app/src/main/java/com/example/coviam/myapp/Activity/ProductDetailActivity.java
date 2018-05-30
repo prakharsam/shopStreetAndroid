@@ -18,10 +18,10 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.coviam.myapp.Adapter.MerchantAdapter;
 import com.example.coviam.myapp.network.LoginController;
-import com.example.coviam.myapp.Model.CartData;
-import com.example.coviam.myapp.Model.CartResponseDTO;
-import com.example.coviam.myapp.Model.MerchantDto;
-import com.example.coviam.myapp.ProductDto;
+import com.example.coviam.myapp.Model.cart.CartData;
+import com.example.coviam.myapp.Model.cart.CartResponseDTO;
+import com.example.coviam.myapp.Model.merchant.MerchantDto;
+import com.example.coviam.myapp.Model.product.ProductDto;
 import com.example.coviam.myapp.network.ProjectAPI;
 import com.example.coviam.myapp.R;
 

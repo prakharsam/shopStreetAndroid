@@ -1,4 +1,4 @@
-package com.example.coviam.myapp.Model;
+package com.example.coviam.myapp.Model.checkout;
 
 
     import com.google.gson.annotations.SerializedName;
