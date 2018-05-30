@@ -51,18 +51,17 @@ public class DisplayByCategoryActivity extends AppCompatActivity {
             Intent intent = new Intent(DisplayByCategoryActivity.this, LoginActivity.class);
             startActivity(intent);
 
-           Button orderHistory=findViewById(R.id.bt_orderHistory);
+            Button orderHistory = findViewById(R.id.bt_orderHistory);
 
             orderHistory.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent intent  = new Intent(DisplayByCategoryActivity.this,OrderHistoryActivity.class);
+                    Intent intent = new Intent(DisplayByCategoryActivity.this, OrderHistoryActivity.class);
                     startActivity(intent);
                 }
             });
 
         }
-
 
 
         productlist.add(
@@ -96,7 +95,7 @@ public class DisplayByCategoryActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
 
-          getMenuInflater().inflate(R.menu.menuresource, menu);
+        getMenuInflater().inflate(R.menu.menuresource, menu);
         return true;
 
     }
@@ -125,7 +124,7 @@ public class DisplayByCategoryActivity extends AppCompatActivity {
             editors.apply();
             Intent intent = new Intent(DisplayByCategoryActivity.this, LoginActivity.class);
             startActivity(intent);
-        }else if(id== R.id.action_home) {
+        } else if (id == R.id.action_home) {
             Intent displayByCategory = new Intent(DisplayByCategoryActivity.this, DisplayByCategoryActivity.class);
             startActivity(displayByCategory);
             return true;

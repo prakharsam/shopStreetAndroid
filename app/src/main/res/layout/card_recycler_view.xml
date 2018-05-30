@@ -18,6 +18,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/my_toolbar" />
 
+    <TextView
+        android:id="@+id/tv_no_data_found"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:visibility="gone"/>
+
     <Button
         android:layout_below="@+id/recycler2_view"
         android:id="@+id/check_out"
@@ -26,5 +33,6 @@
         android:layout_alignParentBottom="true"
         android:background="#9370db	"
         android:text="Checkout" />
+
 
 </RelativeLayout>

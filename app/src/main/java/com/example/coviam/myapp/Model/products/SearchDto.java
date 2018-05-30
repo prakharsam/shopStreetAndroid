@@ -1,6 +1,6 @@
 package com.example.coviam.myapp.Model.products;
 
-public class ProductDto {
+public class SearchDto {
 
 
     private long productID;
@@ -13,7 +13,7 @@ public class ProductDto {
 
     @Override
     public String toString() {
-        return "ProductDto{" +
+        return "SearchDto{" +
                 "productID=" + productID +
                 ", productName='" + productName + '\'' +
                 ", productImgUrl='" + productImgUrl + '\'' +
@@ -24,7 +24,7 @@ public class ProductDto {
                 '}';
     }
 
-    public ProductDto() {
+    public SearchDto() {
     }
 
     public long getProductID() {

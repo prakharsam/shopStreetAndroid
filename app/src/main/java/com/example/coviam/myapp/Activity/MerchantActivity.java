@@ -18,7 +18,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MerchantActivity extends AppCompatActivity implements MerchantAdapter.IAdapterCommunicator{
+public class MerchantActivity extends AppCompatActivity implements MerchantAdapter.IAdapterCommunicator {
     RecyclerView recyclerview;
     Long productID;
     MerchantAdapter merchantAdapter;
@@ -52,6 +52,6 @@ public class MerchantActivity extends AppCompatActivity implements MerchantAdapt
 
     @Override
     public void addToCartFromAdapter() {
-       //
+        //
     }
 }

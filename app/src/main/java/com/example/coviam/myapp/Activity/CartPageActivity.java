@@ -13,6 +13,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coviam.myapp.Adapter.CartAdapter;
@@ -34,11 +35,13 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CartPageActivity extends AppCompatActivity implements CartAdapter.IAdapterCommunicator {
-    RecyclerView recyclerview;
-    CartAdapter cartAdapter;
-    List<GetItemRequest> productlist;
-    ProjectAPI mIProductAPI1;
+    private RecyclerView recyclerView;
+    private CartAdapter cartAdapter;
+    private List<GetItemRequest> productList;
+    private ProjectAPI mIProductApi1;
     private Toolbar mTopToolbar;
+    private TextView noDataFound;
+    private AlertDialog alertDialog = new AlertDialog.Builder(CartPageActivity.this).create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,15 +49,15 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
         setContentView(R.layout.card_recycler_view);
         mTopToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(mTopToolbar);
-        productlist = new ArrayList<>();
-        recyclerview = findViewById(R.id.recycler2_view);
-        recyclerview.setHasFixedSize(true);
-        recyclerview.setLayoutManager(new LinearLayoutManager(this));
-        mIProductAPI1 = LoginController.getInstance().getClient().create(ProjectAPI.class);
+        productList = new ArrayList<>();
+        recyclerView = findViewById(R.id.recycler2_view);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        mIProductApi1 = LoginController.getInstance().getClient().create(ProjectAPI.class);
+        noDataFound = findViewById(R.id.tv_no_data_found);
 
-
-        cartAdapter = new CartAdapter(CartPageActivity.this, productlist, this);
-        recyclerview.setAdapter(cartAdapter);
+        cartAdapter = new CartAdapter(CartPageActivity.this, productList, this);
+        recyclerView.setAdapter(cartAdapter);
         callViewCartApi();
 
 
@@ -66,7 +69,7 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
                 SharedPreferences preferences = getSharedPreferences("userData", MODE_PRIVATE);
                 Long userId = preferences.getLong("id", 0L);
                 String email = preferences.getString("email", "DEFAULT");
-                if (email == "DEFAULT")
+                if (email.equals("DEFAULT"))
 
                 {
                     Intent intent = new Intent(CartPageActivity.this, LoginActivity.class);
@@ -75,30 +78,43 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
                 CheckoutRequestModel checkoutRequestModel = new CheckoutRequestModel(userId, userId, email);
                 final ProgressDialog progressDialog = new ProgressDialog(CartPageActivity.this);
                 progressDialog.show();
-                Call<CheckoutResponseModel> call = mIProductAPI1.checkout(checkoutRequestModel);
+                Call<CheckoutResponseModel> call = mIProductApi1.checkout(checkoutRequestModel);
                 call.enqueue(new Callback<CheckoutResponseModel>() {
                     @Override
-                    public void onResponse(Call<CheckoutResponseModel> call, Response<CheckoutResponseModel> response) {
-                        if (response.code() == 200 && response.body().getSuccess()) {
-                            productlist.clear();
+                    public void onResponse(Call<CheckoutResponseModel> call, Response<CheckoutResponseModel> response)
 
-                            cartAdapter.notifyDataSetChanged();
-                            progressDialog.dismiss();
-                            AlertDialog alertDialog = new AlertDialog.Builder(CartPageActivity.this).create(); //Read Update
-                            alertDialog.setTitle("Congrats!!");
-                            alertDialog.setMessage("your order is placed." + response.body().getOrderid());
+                    {
+                        if (null != response.body()) {
+                            if (response.code() == 200 && response.body().getSuccess()) {
+                                productList.clear();
+
+                                cartAdapter.notifyDataSetChanged();
+                                progressDialog.dismiss();
+                                //Read Update
+                                alertDialog.setTitle("Congrats!!");
+                                alertDialog.setMessage("your order is placed." + response.body().getOrderid());
 
 
-                            alertDialog.show();
+                                alertDialog.show();
+                            } else {
+                                        noDataFound.setVisibility(View.VISIBLE);
+
+                            }
                         } else {
-                            Toast.makeText(CartPageActivity.this, response.body().getReason() + "", Toast.LENGTH_LONG);
+                            alertDialog.setTitle("OOps!!");
+                            alertDialog.setMessage("your order could'nt be placed");
+                            alertDialog.show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<CheckoutResponseModel> call, Throwable t) {
                         progressDialog.dismiss();
-                        Toast.makeText(CartPageActivity.this, "Failed to Delete", Toast.LENGTH_LONG);
+
+                        alertDialog.setTitle("OOps!!");
+                        alertDialog.setMessage("Something Went wrong with our Server .Try  again!!");
+                        alertDialog.show();
+
                     }
                 });
             }
@@ -113,29 +129,36 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
         SharedPreferences preferences = getSharedPreferences("userData", MODE_PRIVATE);
         Long userid = preferences.getLong("id", 0);
 
-        Call<GetCartResponse> call = mIProductAPI1.getCart(userid);
+        Call<GetCartResponse> call = mIProductApi1.getCart(userid);
 
         call.enqueue(new Callback<GetCartResponse>() {
             @Override
             public void onResponse(Call<GetCartResponse> call, Response<GetCartResponse> response) {
 
-                if (response.body().isSuccess()) {
-                    System.out.println("dhjcgasdjg");
-                    Toast.makeText(CartPageActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
-                    productlist.clear();
-                    productlist.addAll(response.body().getItems());
-                    cartAdapter.notifyDataSetChanged();
-                    progressDialog.dismiss();
-                    //Toast.makeText(CartPageActivity.this,response.body().getMessage(), Toast.LENGTH_LONG).show();
-                } else
-                    Toast.makeText(CartPageActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                if (null != response.body()) {
 
+                    if (response.body().isSuccess()) {
+
+
+                        productList.clear();
+                        productList.addAll(response.body().getItems());
+                        cartAdapter.notifyDataSetChanged();
+                        progressDialog.dismiss();
+                        alertDialog.setTitle("OOps!!");
+                        alertDialog.setMessage("Cannot retrive items");
+                        alertDialog.show();
+                    }
+                } else {
+                    noDataFound.setVisibility(View.VISIBLE);
+                }
             }
 
             @Override
             public void onFailure(Call<GetCartResponse> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(CartPageActivity.this, "Failed to fetch", Toast.LENGTH_LONG).show();
+                alertDialog.setTitle("OOps!!");
+                alertDialog.setMessage("Something went wrong .Try again!!");
+                alertDialog.show();
             }
 
         });
@@ -151,23 +174,32 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
         DelRequestModel delRequestModel = new DelRequestModel(cartId, prId, merchantId);
         final ProgressDialog progressDialog = new ProgressDialog(this);
         progressDialog.show();
-        Call<DelResponseModel> call = mIProductAPI1.deleteCart(delRequestModel);
+        Call<DelResponseModel> call = mIProductApi1.deleteCart(delRequestModel);
         call.enqueue(new Callback<DelResponseModel>() {
             @Override
             public void onResponse(Call<DelResponseModel> call, Response<DelResponseModel> response) {
-                if (response.code() == 200 && response.body().getSuccess()) {
-                    productlist.remove(position);
-                    cartAdapter.notifyItemRemoved(position);
-                    progressDialog.dismiss();
+
+                if (null != response.body()) {
+                    if (response.code() == 200 && response.body().getSuccess()) {
+                        productList.remove(position);
+                        cartAdapter.notifyItemRemoved(position);
+                        progressDialog.dismiss();
+                    } else {
+                        alertDialog.setTitle("OOps!!");
+                        alertDialog.setMessage("your order could'nt be deleted");
+                        alertDialog.show();
+                    }
                 } else {
-                    Toast.makeText(CartPageActivity.this, response.body().getReason() + "", Toast.LENGTH_LONG);
+                    noDataFound.setVisibility(View.VISIBLE);
                 }
             }
 
             @Override
             public void onFailure(Call<DelResponseModel> call, Throwable t) {
                 progressDialog.dismiss();
-                Toast.makeText(CartPageActivity.this, "Failed to Delete", Toast.LENGTH_LONG);
+                alertDialog.setTitle("OOps!!");
+                alertDialog.setMessage("Something Went Wrong .Try Again!!");
+                alertDialog.show();
             }
         });
     }

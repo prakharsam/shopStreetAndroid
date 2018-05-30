@@ -12,6 +12,7 @@ import com.example.coviam.myapp.Model.Orders.OrdersParentResponse;
 import com.example.coviam.myapp.Model.authentication.ResponseFromUser;
 import com.example.coviam.myapp.Model.authentication.UserInfo;
 import com.example.coviam.myapp.Model.product.ProductDto;
+import com.example.coviam.myapp.Model.products.SearchDto;
 
 import java.util.List;
 
@@ -55,5 +56,5 @@ public interface ProjectAPI {
     Call<OrdersParentResponse> orderHistory(@Path("userid") Long id);
 
     @GET("search")
-    Call<List<com.example.coviam.myapp.Model.products.ProductDto>>search(@Query("name")String name);
+    Call<List<SearchDto>>search(@Query("name")String name);
 }

@@ -1,5 +1,6 @@
 package com.example.coviam.myapp.Activity;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,65 +25,74 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-    public class OrderHistoryActivity extends AppCompatActivity {
+public class OrderHistoryActivity extends AppCompatActivity {
 
-        RecyclerView recyclerview;
-        OrderHistoryAdapter orderAdapter;
-        List<ItemsItem> itemsItems;
+    private RecyclerView recyclerview;
 
-        ProjectAPI mIProductAPI1;
+    private ProjectAPI mIProductAPI1;
+    private AlertDialog alertDialog = new AlertDialog.Builder(OrderHistoryActivity.this).create();
 
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.recycler_view_order_history_level1);
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.recycler_view_order_history_level1);
 
-            recyclerview = (RecyclerView) findViewById(R.id.recycler3_view);
-            recyclerview.setHasFixedSize(true);
-            recyclerview.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
-            mIProductAPI1 = LoginController.getInstance().getOrderHistoryClient().create(ProjectAPI.class);
 
-            viewOrderHistoryApi();
+        recyclerview.setHasFixedSize(true);
+        recyclerview.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
+        mIProductAPI1 = LoginController.getInstance().getOrderHistoryClient().create(ProjectAPI.class);
 
-            Button categoryreturn =findViewById(R.id.back_to_category);
-            categoryreturn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent i1= new Intent(OrderHistoryActivity.this,DisplayByCategoryActivity.class);
-                    startActivity(i1);
-                }
-            });
+        viewOrderHistoryApi();
 
-        }
+        Button categoryreturn = findViewById(R.id.back_to_category);
+        categoryreturn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i1 = new Intent(OrderHistoryActivity.this, DisplayByCategoryActivity.class);
+                startActivity(i1);
+            }
+        });
 
-        private void viewOrderHistoryApi(){
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.show();
+    }
 
-            SharedPreferences preferences = getSharedPreferences("userData", MODE_PRIVATE);
-            Long userId = preferences.getLong("id", 0L);
+    private void viewOrderHistoryApi() {
+        final ProgressDialog progressDialog = new ProgressDialog(this);
+        progressDialog.show();
 
-            Call<OrdersParentResponse> call = mIProductAPI1.orderHistory(userId);
+        SharedPreferences preferences = getSharedPreferences("userData", MODE_PRIVATE);
+        Long userId = preferences.getLong("id", 0L);
 
-            call.enqueue(new Callback<OrdersParentResponse>()
-            {
+        Call<OrdersParentResponse> call = mIProductAPI1.orderHistory(userId);
 
-                @Override
-                public void onResponse(Call<OrdersParentResponse> call, Response<OrdersParentResponse> response) {
-                    progressDialog.dismiss();
+        call.enqueue(new Callback<OrdersParentResponse>() {
+
+            @Override
+            public void onResponse(Call<OrdersParentResponse> call, Response<OrdersParentResponse> response) {
+                progressDialog.dismiss();
+
+                if (null != response.body()) {
                     recyclerview.setAdapter(new OrderHistoryAdapter(
                             OrderHistoryActivity.this, response.body().getOrders(), OrderHistoryActivity.this));
+                } else {
+
+                    alertDialog.setTitle("OOps!!");
+                    alertDialog.setMessage("No orders to show");
+                    alertDialog.show();
+
                 }
+            }
 
-                @Override
-                public void onFailure(Call<OrdersParentResponse> call, Throwable t)
-                {
-                    Toast.makeText(OrderHistoryActivity.this,"Failed to Retrieve Data",Toast.LENGTH_LONG).show();
-                }
-            });
-            progressDialog.show();
+            @Override
+            public void onFailure(Call<OrdersParentResponse> call, Throwable t) {
+
+                alertDialog.setTitle("OOps!!");
+                alertDialog.setMessage("Something went wrong .try again!!");
+                alertDialog.show();
+            }
+        });
+        progressDialog.show();
 
 
-        }
+    }
 
 }
