@@ -1,4 +1,4 @@
-package com.example.coviam.myapp;
+package com.example.coviam.myapp.Model;
 
 public class ResponseFromUser {
     public boolean isResponse() {

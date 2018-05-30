@@ -1,4 +1,4 @@
-package com.example.coviam.myapp;
+package com.example.coviam.myapp.Activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -9,15 +9,16 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.coviam.myapp.Adapter.CategoryAdapter;
 import com.example.coviam.myapp.Adapter.ProductAdapter;
-import com.example.coviam.myapp.Model.ProductModel;
+import com.example.coviam.myapp.network.LoginController;
+import com.example.coviam.myapp.ProductDto;
+import com.example.coviam.myapp.network.ProjectAPI;
+import com.example.coviam.myapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +29,7 @@ import retrofit2.Response;
 
 public class ProductListActivity extends AppCompatActivity {
 
-    //String imgUrl = "https://api.androidhive.info/images/glide/medium/deadpool.jpg";
+
     private Toolbar mTopToolbar;
     private ProjectAPI projectApi;
     RecyclerView recyclerview;
@@ -103,12 +104,17 @@ public class ProductListActivity extends AppCompatActivity {
                 public void onResponse(Call<List<ProductDto>> call, Response<List<ProductDto>> response) {
                     productlist.addAll(response.body());
                     productadapter.notifyDataSetChanged();
-                    Toast.makeText(ProductListActivity.this, "Got products of category", Toast.LENGTH_LONG).show();
+                   if(null==response.body())
+                   {
+                      Intent intent = new Intent(ProductListActivity.this,NothingAvailableActivity.class);
+                      startActivity(intent);
+
+                   }
                 }
 
                 @Override
                 public void onFailure(Call<List<ProductDto>> call, Throwable t) {
-                    Toast.makeText(ProductListActivity.this, "No products in category", Toast.LENGTH_LONG).show();
+                    Toast.makeText(ProductListActivity.this, "No Products  retrieved", Toast.LENGTH_LONG).show();
                 }
 
             });
@@ -125,23 +131,20 @@ public class ProductListActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
+
         getMenuInflater().inflate(R.menu.menuresource, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+
         if (id == R.id.action_cart) {
             Intent displayByCategory = new Intent(ProductListActivity.this, CartPageActivity.class);
             startActivity(displayByCategory);
-            //Toast.makeText(ProductListActivity.this, "Action clicked", Toast.LENGTH_LONG).show();
             return true;
         }
         else if (id == R.id.action_search) {
@@ -160,7 +163,7 @@ public class ProductListActivity extends AppCompatActivity {
             Intent intent = new Intent(ProductListActivity.this, LoginActivity.class);
             startActivity(intent);
         }else if(id== R.id.action_home) {
-            Intent displayByCategory = new Intent(ProductListActivity.this, DisplayByCategory.class);
+            Intent displayByCategory = new Intent(ProductListActivity.this, DisplayByCategoryActivity.class);
             startActivity(displayByCategory);
             return true;
         }

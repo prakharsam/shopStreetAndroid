@@ -1,6 +1,5 @@
-package com.example.coviam.myapp;
+package com.example.coviam.myapp.Activity;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.TextInputEditText;
@@ -11,7 +10,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import java.util.Arrays;
+import com.example.coviam.myapp.network.LoginController;
+import com.example.coviam.myapp.Model.ResponseFromUser;
+import com.example.coviam.myapp.Model.UserInfo;
+import com.example.coviam.myapp.network.ProjectAPI;
+import com.example.coviam.myapp.R;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,7 +51,7 @@ public class SignupActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(userName.getText().toString().length()!=0 & userName.getText().toString().length()<20 & email.getText().toString().length()!=0 & address.getText().toString().length()!=0) {
                     if (password.getText().toString().equals(confirmPassword.getText().toString())) {
-                        Call<ResponseFromUser> userCall = projectApi.addUser(new User(userName.getText().toString(), password.getText().toString(), email.getText().toString(), address.getText().toString(), nameEditText.getText().toString()));
+                        Call<ResponseFromUser> userCall = projectApi.addUser(new UserInfo(userName.getText().toString(), password.getText().toString(), email.getText().toString(), address.getText().toString(), nameEditText.getText().toString()));
                         userCall.enqueue(new Callback<ResponseFromUser>() {
                             @Override
                             public void onResponse(Call<ResponseFromUser> call, Response<ResponseFromUser> response) {
@@ -61,7 +64,7 @@ public class SignupActivity extends AppCompatActivity {
 
                                     Toast.makeText(SignupActivity.this, "Sign up success", Toast.LENGTH_SHORT).show();
 
-                                    Intent displayByCategory = new Intent(SignupActivity.this, DisplayByCategory.class);
+                                    Intent displayByCategory = new Intent(SignupActivity.this, DisplayByCategoryActivity.class);
                                     startActivity(displayByCategory);
                                 } else {
                                     Toast.makeText(SignupActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
@@ -91,7 +94,7 @@ public class SignupActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Intent displayByCategory = new Intent(SignupActivity.this, DisplayByCategory.class);
+                Intent displayByCategory = new Intent(SignupActivity.this, DisplayByCategoryActivity.class);
                 startActivity(displayByCategory);
             }
         });

@@ -1,4 +1,4 @@
-package com.example.coviam.myapp;
+package com.example.coviam.myapp.Activity;
 
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
@@ -6,13 +6,15 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-public class LauncherActivity extends AppCompatActivity {
+import com.example.coviam.myapp.R;
+
+public class CredentialsActivity extends AppCompatActivity {
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.firstpage);
+        setContentView(R.layout.credentials);
         Button signIn = (Button) findViewById(R.id.bt_signUp);
         Button signUp = (Button) findViewById(R.id.bt_signIn);
         Button skip = (Button) findViewById(R.id.bt_skip);
@@ -20,7 +22,7 @@ public class LauncherActivity extends AppCompatActivity {
         signIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent login = new Intent(LauncherActivity.this, LoginActivity.class);
+                Intent login = new Intent(CredentialsActivity.this, LoginActivity.class);
                 startActivity(login);
             }
         });
@@ -28,7 +30,7 @@ public class LauncherActivity extends AppCompatActivity {
         signUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent signUp = new Intent(LauncherActivity.this, SignupActivity.class);
+                Intent signUp = new Intent(CredentialsActivity.this, SignupActivity.class);
                 startActivity(signUp);
             }
 
@@ -38,7 +40,7 @@ public class LauncherActivity extends AppCompatActivity {
         skip.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent category = new Intent(LauncherActivity.this, DisplayByCategory.class);
+                Intent category = new Intent(CredentialsActivity.this, DisplayByCategoryActivity.class);
                 startActivity(category);
             }
         });

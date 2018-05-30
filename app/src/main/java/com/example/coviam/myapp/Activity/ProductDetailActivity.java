@@ -1,16 +1,12 @@
-package com.example.coviam.myapp;
+package com.example.coviam.myapp.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
-import android.text.Editable;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -21,10 +17,13 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.coviam.myapp.Adapter.MerchantAdapter;
-import com.example.coviam.myapp.Adapter.ProductAdapter;
+import com.example.coviam.myapp.network.LoginController;
 import com.example.coviam.myapp.Model.CartData;
 import com.example.coviam.myapp.Model.CartResponseDTO;
 import com.example.coviam.myapp.Model.MerchantDto;
+import com.example.coviam.myapp.ProductDto;
+import com.example.coviam.myapp.network.ProjectAPI;
+import com.example.coviam.myapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -89,12 +88,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
             @Override
             public void onResponse(Call<ProductDto> call, Response<ProductDto> response) {
 
-//                textViewName.setText("NAME:" + response.body().getProductName());
-//                productDto.setProductID(response.body().getProductID());
 
-//                productDto.setProductName(response.body().getProductName());
-
-//                textViewPrice.setText("PRICE:" + response.body().getProductPrice() + "");
                 if(response.body()!=null) {
                     textViewName.setText("NAME:" + response.body().getProductName());
                     productDto.setProductID(response.body().getProductID());
@@ -107,7 +101,6 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
 
                     description.setText(response.body().getProductDescription());
 
-//                merchantName.setText("MERCHANT:" + response.body().getMerchantName());
                     productDto.setMerchantID(response.body().getMerchantID());
 
                     merchantName.setText("MERCHANT:" + response.body().getMerchantName());
@@ -225,29 +218,7 @@ public class ProductDetailActivity extends AppCompatActivity implements Merchant
             }
         });
 
-//        buynow.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//
-//                Intent intent = getIntent();
-//
-//                intent.putExtra("pid", productID);
-//
-//                intent.putExtra("mid", productDto.getMerchantID());
-//
-//                System.out.println("QTY" + quantityEntry.getText().toString());
-//
-//                intent.putExtra("qty", quantityEntry.getText().toString());
-//
-//
-//                intent.putExtra("price", productDto.getProductPrice());
-//
-//
-//                projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
-//                addToCart();
-//
-//            }
-//        });
+
     }
 
     private void addToCart1() {

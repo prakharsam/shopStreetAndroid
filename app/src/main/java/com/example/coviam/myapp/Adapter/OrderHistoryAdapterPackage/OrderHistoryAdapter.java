@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.coviam.myapp.Model.Orders.OrdersItem;
-import com.example.coviam.myapp.OrderHistoryActivity;
+import com.example.coviam.myapp.Activity.OrderHistoryActivity;
 import com.example.coviam.myapp.R;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
     @Override
     public OrderHistoryViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-        View view = inflater.inflate(R.layout.recycler_view_order_history1, null);
+        View view = inflater.inflate(R.layout.recycler_view_order_history_level2, null);
         return new OrderHistoryAdapter.OrderHistoryViewHolder(view);
     }
 

@@ -3,7 +3,6 @@ package com.example.coviam.myapp.Adapter;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -14,9 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.coviam.myapp.Model.CartData;
 import com.example.coviam.myapp.Model.GetItemRequest;
-import com.example.coviam.myapp.ProductDetailActivity;
 import com.example.coviam.myapp.R;
 
 import java.util.List;

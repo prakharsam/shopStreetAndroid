@@ -1,23 +1,23 @@
-package com.example.coviam.myapp;
+package com.example.coviam.myapp.Activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coviam.myapp.Adapter.OrderHistoryAdapterPackage.OrderHistoryAdapter;
+import com.example.coviam.myapp.network.LoginController;
 import com.example.coviam.myapp.Model.Orders.ItemsItem;
 import com.example.coviam.myapp.Model.Orders.OrdersParentResponse;
+import com.example.coviam.myapp.network.ProjectAPI;
+import com.example.coviam.myapp.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,27 +35,20 @@ import retrofit2.Response;
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-            setContentView(R.layout.recycler_view_order_history);
+            setContentView(R.layout.recycler_view_order_history_level1);
 
             recyclerview = (RecyclerView) findViewById(R.id.recycler3_view);
             recyclerview.setHasFixedSize(true);
             recyclerview.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
             mIProductAPI1 = LoginController.getInstance().getOrderHistoryClient().create(ProjectAPI.class);
 
-
-
             viewOrderHistoryApi();
-
-//            orderAdapter = new OrderHistoryAdapter(OrderHistoryActivity.this,ordersItems,this);
-//            recyclerview.setAdapter(orderAdapter);
-
-
 
             Button categoryreturn =findViewById(R.id.back_to_category);
             categoryreturn.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent i1= new Intent(OrderHistoryActivity.this,DisplayByCategory.class);
+                    Intent i1= new Intent(OrderHistoryActivity.this,DisplayByCategoryActivity.class);
                     startActivity(i1);
                 }
             });

@@ -12,7 +12,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.coviam.myapp.ProductDetailActivity;
+import com.example.coviam.myapp.Activity.ProductDetailActivity;
 import com.example.coviam.myapp.ProductDto;
 import com.example.coviam.myapp.R;
 

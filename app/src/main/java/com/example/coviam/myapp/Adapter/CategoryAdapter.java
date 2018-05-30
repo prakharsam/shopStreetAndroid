@@ -3,7 +3,6 @@ package com.example.coviam.myapp.Adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.CardView;
@@ -13,30 +12,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
-import com.example.coviam.myapp.DisplayByCategory;
-import com.example.coviam.myapp.LoginActivity;
-import com.example.coviam.myapp.LoginController;
+import com.example.coviam.myapp.network.LoginController;
 import com.example.coviam.myapp.Model.Categorymodel;
-import com.example.coviam.myapp.ProductDto;
-import com.example.coviam.myapp.ProductListActivity;
-import com.example.coviam.myapp.ProjectAPI;
+import com.example.coviam.myapp.Activity.ProductListActivity;
+import com.example.coviam.myapp.network.ProjectAPI;
 import com.example.coviam.myapp.R;
-import com.example.coviam.myapp.ResponseFromUser;
 
 import java.util.List;
-
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ProductViewHolder> {
 
     private Context mcontex;
     private ProjectAPI projectApi;
     private List<Categorymodel> mCategoryModel;
+
 
     public CategoryAdapter(Context mcontex, List<Categorymodel> productmodel) {
         this.mcontex = mcontex;
@@ -59,6 +49,9 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Produc
         holder.imageView.setImageDrawable(ContextCompat.getDrawable(holder.imageView.getContext(),
                 categorymodel.getImageId()));
 
+
+
+
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -77,13 +70,15 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Produc
 
     class ProductViewHolder extends RecyclerView.ViewHolder {
         ImageView imageView;
-        TextView textViewTitle, textViewShortDesc, textViewRating, textViewPrice;
+        TextView textViewTitle;
         CardView parent;
+
 
         public ProductViewHolder(View itemView) {
             super(itemView);
             imageView = itemView.findViewById(R.id.imageView);
             textViewTitle = itemView.findViewById(R.id.textViewTitle);
+
             parent = itemView.findViewById(R.id.cv_parent);
         }
 
