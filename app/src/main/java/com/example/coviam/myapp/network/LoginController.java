@@ -10,10 +10,10 @@ public class LoginController extends Application {
 
 
     private static Retrofit retrofit = null;
-    private static Retrofit retrofitProduct=null;
-    private static Retrofit retrofitcart=null;
-    private static Retrofit retrofitsearch=null;
-    private static Retrofit retrofitForOrderHistory= null;
+    private static Retrofit retrofitProduct = null;
+    private static Retrofit retrofitCart = null;
+    private static Retrofit retrofitSearch = null;
+    private static Retrofit retrofitForOrderHistory = null;
     public static LoginController mInstance;
 
 
@@ -58,16 +58,16 @@ public class LoginController extends Application {
 
 
     public Retrofit getClient() {
-        if (null == retrofitcart) {
+        if (null == retrofitCart) {
             OkHttpClient client = new OkHttpClient.Builder().build();
 
-            retrofitcart = new Retrofit.Builder()
+            retrofitCart = new Retrofit.Builder()
                     .baseUrl("http://10.177.2.31:4000/v1/cart/")
                     .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();
         }
-        return retrofitcart;
+        return retrofitCart;
     }
 
     public Retrofit getOrderHistoryClient() {
@@ -85,17 +85,17 @@ public class LoginController extends Application {
     }
 
     public Retrofit getSearchClient() {
-        if (null == retrofitsearch) {
+        if (null == retrofitSearch) {
             OkHttpClient client = new OkHttpClient.Builder().build();
 
 
-            retrofitsearch = new Retrofit.Builder()
+            retrofitSearch = new Retrofit.Builder()
                     .baseUrl("http://10.177.1.106:8090/")
-                   .addConverterFactory(GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create())
                     .client(client)
                     .build();
         }
-        return retrofitsearch;
+        return retrofitSearch;
     }
 
 }

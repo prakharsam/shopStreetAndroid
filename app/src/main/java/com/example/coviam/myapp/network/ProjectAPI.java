@@ -31,13 +31,13 @@ public interface ProjectAPI {
     Call<ResponseFromUser> authorize(@Query("userName") String userName, @Query("password") String password);
 
     @GET("get-products-by-cid")
-    Call<List<ProductDto>> getproductsbycid(@Query("categoryID") Long categoryID);
+    Call<List<ProductDto>> getProductsByCid(@Query("categoryID") Long categoryID);
 
     @GET("get-product-by-id")
-    Call<ProductDto>getproductbyid(@Query("productID") Long productID);
+    Call<ProductDto> getProductById(@Query("productID") Long productID);
 
     @GET("get-merchants-by-pid")
-    Call<List<MerchantDto>> getmerchantsbypid(@Query("productID") Long productID);
+    Call<List<MerchantDto>> getMerchantsByPid(@Query("productID") Long productID);
 
     @GET("get/{id}")
     Call<GetCartResponse> getCart(@Path("id") Long id);

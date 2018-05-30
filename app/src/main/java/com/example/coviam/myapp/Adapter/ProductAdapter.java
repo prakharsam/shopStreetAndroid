@@ -33,7 +33,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
     @Override
     public ProductViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mcontex);
-        View view = inflater.inflate(R.layout.card_view_product_list, null);
+        View view = inflater.inflate(R.layout.card_view_product_list, parent,false);
         return new ProductViewHolder(view);
     }
 
@@ -53,8 +53,6 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.ProductV
                 String merchantName=productDto.getMerchantName();
                 Double price=productDto.getProductPrice();
                 Long merchantID=productDto.getMerchantID();
-
-
                 Intent intent = new Intent(holder.parent.getContext(), ProductDetailActivity.class);
                 intent.putExtra("productID", productID);
                 intent.putExtra("productName",productName);

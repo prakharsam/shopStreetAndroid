@@ -44,7 +44,7 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.card_recycler_view);
-        mTopToolbar = (Toolbar) findViewById(R.id.my_toolbar);
+        mTopToolbar = findViewById(R.id.my_toolbar);
         setSupportActionBar(mTopToolbar);
         productlist = new ArrayList<>();
         recyclerview = findViewById(R.id.recycler2_view);
@@ -72,7 +72,7 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
                     Intent intent = new Intent(CartPageActivity.this, LoginActivity.class);
                     startActivity(intent);
                 }
-                CheckoutRequestModel checkoutRequestModel = new CheckoutRequestModel(userId,userId, email);
+                CheckoutRequestModel checkoutRequestModel = new CheckoutRequestModel(userId, userId, email);
                 final ProgressDialog progressDialog = new ProgressDialog(CartPageActivity.this);
                 progressDialog.show();
                 Call<CheckoutResponseModel> call = mIProductAPI1.checkout(checkoutRequestModel);
@@ -141,7 +141,6 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
         });
 
 
-
         progressDialog.show();
 
     }
@@ -175,7 +174,6 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-
         getMenuInflater().inflate(R.menu.menuresource, menu);
         return true;
     }
@@ -186,7 +184,7 @@ public class CartPageActivity extends AppCompatActivity implements CartAdapter.I
         int id = item.getItemId();
 
 
-         if(id== R.id.action_home) {
+        if (id == R.id.action_home) {
             Intent displayByCategory = new Intent(CartPageActivity.this, DisplayByCategoryActivity.class);
             startActivity(displayByCategory);
             return true;

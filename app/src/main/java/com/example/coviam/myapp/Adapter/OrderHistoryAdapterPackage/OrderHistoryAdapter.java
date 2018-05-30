@@ -20,6 +20,7 @@ public class OrderHistoryAdapter extends RecyclerView.Adapter<OrderHistoryAdapte
 {
     private Context mcontex;
     private List<OrdersItem> mOrdersItemList;
+
     public OrderHistoryAdapter(Context context, List<OrdersItem> orderModelList, OrderHistoryActivity orderHistory) {
         this.mcontex = context;
         mOrdersItemList = orderModelList;
