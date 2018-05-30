@@ -1,6 +1,7 @@
 package com.example.coviam.myapp.Activity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.TextInputEditText;
@@ -29,7 +30,7 @@ public class SignupActivity extends AppCompatActivity {
     private TextInputEditText password;
     private TextInputEditText confirmPassword;
     private EditText address;
-    private AlertDialog alertDialog = new AlertDialog.Builder(SignupActivity.this).create();
+    private AlertDialog.Builder alertDialog ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +45,8 @@ public class SignupActivity extends AppCompatActivity {
         password = findViewById(R.id.et_password);
         address = findViewById(R.id.et_address);
         confirmPassword=findViewById(R.id.et_confirmpassword);
+        alertDialog = new AlertDialog.Builder(SignupActivity.this);
+
 
 
         projectApi = LoginController.getInstance().getLoginClient().create(ProjectAPI.class);
@@ -72,6 +75,12 @@ public class SignupActivity extends AppCompatActivity {
                                 } else {
                                     alertDialog.setTitle("OOps!!");
                                     alertDialog.setMessage("you could'nt be signed in");
+                                    alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    dialog.dismiss();
+                                                }
+                                            });
                                     alertDialog.show();
                                 }
                             }
@@ -80,6 +89,12 @@ public class SignupActivity extends AppCompatActivity {
                             public void onFailure(Call<ResponseFromUser> call, Throwable t) {
                                 alertDialog.setTitle("OOps!!");
                                 alertDialog.setMessage("Something Went Wrong .Try again!!");
+                                alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                            @Override
+                                            public void onClick(DialogInterface dialog, int which) {
+                                                dialog.dismiss();
+                                            }
+                                        });
                                 alertDialog.show();
                             }
                         });
@@ -87,12 +102,24 @@ public class SignupActivity extends AppCompatActivity {
 
                         alertDialog.setTitle("Sorry!!");
                         alertDialog.setMessage("Password Does'nt match");
+                        alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
                         alertDialog.show();
                     }
                 }else{
 
                     alertDialog.setTitle("Sorry!!");
                     alertDialog.setMessage("Enter UserName and password");
+                    alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
                     alertDialog.show();
                 }
             }

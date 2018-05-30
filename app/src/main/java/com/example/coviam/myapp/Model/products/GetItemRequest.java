@@ -1,12 +1,19 @@
 package com.example.coviam.myapp.Model.products;
 
-    public class GetItemRequest {
+import com.google.gson.annotations.SerializedName;
 
+public class GetItemRequest {
+
+        @SerializedName("cartId")
         private Long cartid;
+        @SerializedName("productId")
         private Long pid;
+        @SerializedName("merchantId")
         private Long mid;
         private Long qty;
+        @SerializedName("productPrice")
         private Double price;
+        @SerializedName("productImage")
         private String image;
 
         public GetItemRequest(Long cartid, Long pid, Long mid, Long qty, Double price, String image, String productName) {

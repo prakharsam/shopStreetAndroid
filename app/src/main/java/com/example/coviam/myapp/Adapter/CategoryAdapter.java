@@ -49,9 +49,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Produc
         holder.imageView.setImageDrawable(ContextCompat.getDrawable(holder.imageView.getContext(),
                 categorymodel.getImageId()));
 
-
-
-
         holder.parent.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

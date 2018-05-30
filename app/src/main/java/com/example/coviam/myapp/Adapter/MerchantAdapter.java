@@ -17,7 +17,6 @@ import java.util.List;
 public class MerchantAdapter extends RecyclerView.Adapter<MerchantAdapter.ViewHolder> {
     private List<MerchantDto> mMerchant;
     private IAdapterCommunicator iAdapterCommunicator;
-
     public MerchantAdapter(List<MerchantDto> merchants, IAdapterCommunicator iAdapterCommunicator) {
         mMerchant = merchants;
         this.iAdapterCommunicator = iAdapterCommunicator;
@@ -27,7 +26,6 @@ public class MerchantAdapter extends RecyclerView.Adapter<MerchantAdapter.ViewHo
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.merchant_card_view, parent, false);
         return new ViewHolder(view);
     }
@@ -38,7 +36,7 @@ public class MerchantAdapter extends RecyclerView.Adapter<MerchantAdapter.ViewHo
         holder.merchantName.setText(merchantDto.getMerchantName());
         holder.price.setText(merchantDto.getProductPrice() + "");
         holder.quantity.setText(merchantDto.getProductStock() + "");
-        holder.rating.setText(merchantDto.getWeightedFactor() + "");
+        holder.rating.setText(merchantDto.getMerchantRating()+"");
         holder.btAddToCart.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

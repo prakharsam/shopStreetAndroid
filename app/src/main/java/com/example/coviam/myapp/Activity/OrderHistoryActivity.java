@@ -2,6 +2,7 @@ package com.example.coviam.myapp.Activity;
 
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -30,18 +31,18 @@ public class OrderHistoryActivity extends AppCompatActivity {
     private RecyclerView recyclerview;
 
     private ProjectAPI mIProductAPI1;
-    private AlertDialog alertDialog = new AlertDialog.Builder(OrderHistoryActivity.this).create();
+    private AlertDialog.Builder alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.recycler_view_order_history_level1);
 
-
+        recyclerview = findViewById(R.id.recycler3_view);
         recyclerview.setHasFixedSize(true);
         recyclerview.setLayoutManager(new LinearLayoutManager(this.getApplicationContext()));
         mIProductAPI1 = LoginController.getInstance().getOrderHistoryClient().create(ProjectAPI.class);
-
+        alertDialog = new AlertDialog.Builder(OrderHistoryActivity.this);
         viewOrderHistoryApi();
 
         Button categoryreturn = findViewById(R.id.back_to_category);
@@ -77,6 +78,12 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
                     alertDialog.setTitle("OOps!!");
                     alertDialog.setMessage("No orders to show");
+                    alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
                     alertDialog.show();
 
                 }
@@ -87,6 +94,12 @@ public class OrderHistoryActivity extends AppCompatActivity {
 
                 alertDialog.setTitle("OOps!!");
                 alertDialog.setMessage("Something went wrong .try again!!");
+                alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
                 alertDialog.show();
             }
         });

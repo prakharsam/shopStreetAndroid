@@ -1,6 +1,7 @@
 package com.example.coviam.myapp.Activity;
 
 import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +24,9 @@ public class LoginActivity extends AppCompatActivity {
     private ProjectAPI projectApi;
     private EditText userName;
     private EditText password;
-    private AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
+    private AlertDialog.Builder alertDialog;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.loginpage);
         Button login = findViewById(R.id.bt_login1);
         Button signup = findViewById(R.id.bt_signUp1);
+        alertDialog = new AlertDialog.Builder(LoginActivity.this);
 
         userName = findViewById(R.id.et_username);
         password = findViewById(R.id.et_password);
@@ -60,6 +64,12 @@ public class LoginActivity extends AppCompatActivity {
 
                                 alertDialog.setTitle("OOps!!");
                                 alertDialog.setMessage("password does not match!!");
+                                alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        dialog.dismiss();
+                                    }
+                                });
                                 alertDialog.show();
 
                             }
@@ -69,6 +79,12 @@ public class LoginActivity extends AppCompatActivity {
                         public void onFailure(Call<ResponseFromUser> call, Throwable t) {
                             alertDialog.setTitle("OOps!!");
                             alertDialog.setMessage("could'nt sign you in!!");
+                            alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            });
                             alertDialog.show();
 
                         }
@@ -76,6 +92,12 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     alertDialog.setTitle("OOps!!");
                     alertDialog.setMessage("Something Went wrong with our Server .Try  again!!");
+                    alertDialog.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.dismiss();
+                        }
+                    });
                     alertDialog.show();
 
                 }

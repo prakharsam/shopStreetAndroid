@@ -6,9 +6,9 @@ package com.example.coviam.myapp.Model.checkout;
     public class CheckoutResponseModel {
         @SerializedName("success")
         private Boolean  success;
-        @SerializedName("orderid")
+        @SerializedName("orderId")
         private Long orderid;
-        @SerializedName("reason")
+        @SerializedName("message")
         private String reason;
 
 

@@ -11,8 +11,8 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/ic_launcher"
         android:supportsRtl="true"
+        android:largeHeap="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Activity.CredentialsActivity" />
         <activity android:name=".Activity.OrderHistoryActivity" />
         <activity android:name=".Activity.LoginActivity" />
         <activity android:name=".Activity.CartPageActivity" />
@@ -28,9 +28,7 @@
         <activity android:name=".Activity.ProductDetailActivity" />
         <activity android:name=".Activity.Main2Activity" />
         <activity
-            android:name=".Activity.DisplayByCategoryActivity"
-            android:noHistory="true" />
-        <activity android:name=".Activity.NothingAvailableActivity" />
+            android:name=".Activity.DisplayByCategoryActivity" />
         <activity android:name=".Activity.MerchantActivity"></activity>
     </application>
 
