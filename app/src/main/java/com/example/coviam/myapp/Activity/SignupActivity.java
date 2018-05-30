@@ -1,5 +1,6 @@
 package com.example.coviam.myapp.Activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.design.widget.TextInputEditText;
@@ -28,6 +29,7 @@ public class SignupActivity extends AppCompatActivity {
     private TextInputEditText password;
     private TextInputEditText confirmPassword;
     private EditText address;
+    private AlertDialog alertDialog = new AlertDialog.Builder(SignupActivity.this).create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,37 +56,44 @@ public class SignupActivity extends AppCompatActivity {
                         Call<ResponseFromUser> userCall = projectApi.addUser(new UserInfo(userName.getText().toString(), password.getText().toString(), email.getText().toString(), address.getText().toString(), nameEditText.getText().toString()));
                         userCall.enqueue(new Callback<ResponseFromUser>() {
                             @Override
-                            public void onResponse(Call<ResponseFromUser> call, Response<ResponseFromUser> response) {
-                                if (response.body().isResponse() == true) {
+                            public void onResponse(Call<ResponseFromUser> call, Response<ResponseFromUser> response)
+                            {
+                                if (response.body().isResponse() ) {
                                     //edit
                                     SharedPreferences.Editor editor = getSharedPreferences("userData", MODE_PRIVATE).edit();
                                     editor.putLong("id", response.body().getUserId());
                                     editor.putString("email", response.body().getEmail());
                                     editor.apply();
 
-                                    Toast.makeText(SignupActivity.this, "Sign up success", Toast.LENGTH_SHORT).show();
+
 
                                     Intent displayByCategory = new Intent(SignupActivity.this, DisplayByCategoryActivity.class);
                                     startActivity(displayByCategory);
                                 } else {
-                                    Toast.makeText(SignupActivity.this, "Something went wrong", Toast.LENGTH_SHORT).show();
+                                    alertDialog.setTitle("OOps!!");
+                                    alertDialog.setMessage("you could'nt be signed in");
+                                    alertDialog.show();
                                 }
                             }
 
                             @Override
                             public void onFailure(Call<ResponseFromUser> call, Throwable t) {
-                                Toast.makeText(SignupActivity.this, "Failed to add user into database", Toast.LENGTH_LONG);
+                                alertDialog.setTitle("OOps!!");
+                                alertDialog.setMessage("Something Went Wrong .Try again!!");
+                                alertDialog.show();
                             }
                         });
                     } else {
 
-                        Toast.makeText(SignupActivity.this,"Passwords doesn't match",Toast.LENGTH_LONG).show();
-
+                        alertDialog.setTitle("Sorry!!");
+                        alertDialog.setMessage("Password Does'nt match");
+                        alertDialog.show();
                     }
                 }else{
 
-                    Toast.makeText(SignupActivity.this, "Enter userName and Email", Toast.LENGTH_LONG).show();
-
+                    alertDialog.setTitle("Sorry!!");
+                    alertDialog.setMessage("Enter UserName and password");
+                    alertDialog.show();
                 }
             }
         });

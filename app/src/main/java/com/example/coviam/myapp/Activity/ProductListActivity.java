@@ -1,5 +1,6 @@
 package com.example.coviam.myapp.Activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -15,8 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.coviam.myapp.Adapter.ProductAdapter;
-import com.example.coviam.myapp.network.LoginController;
 import com.example.coviam.myapp.Model.product.ProductDto;
+import com.example.coviam.myapp.Model.products.SearchDto;
+import com.example.coviam.myapp.network.LoginController;
 import com.example.coviam.myapp.network.ProjectAPI;
 import com.example.coviam.myapp.R;
 
@@ -35,8 +37,10 @@ public class ProductListActivity extends AppCompatActivity {
     RecyclerView recyclerview;
     ProductAdapter productadapter;
     List<ProductDto> productlist;
-    List<com.example.coviam.myapp.Model.products.ProductDto> productlist1;
+    List<SearchDto> productlist1;
     boolean boolvariable;
+    private AlertDialog alertDialog = new AlertDialog.Builder(ProductListActivity.this).create();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,40 +67,44 @@ public class ProductListActivity extends AppCompatActivity {
 
             projectApi = LoginController.getInstance().getSearchClient().create(ProjectAPI.class);
 
-            Call<List<com.example.coviam.myapp.Model.products.ProductDto>> userCall2 = projectApi.search(name);
-            userCall2.enqueue(new Callback<List<com.example.coviam.myapp.Model.products.ProductDto>>() {
+            Call<List<SearchDto>> userCall2 = projectApi.search(name);
+            userCall2.enqueue(new Callback<List<SearchDto>>() {
                 @Override
-                public void onResponse(Call<List<com.example.coviam.myapp.Model.products.ProductDto>> call, Response<List<com.example.coviam.myapp.Model.products.ProductDto>> response) {
-                   if (null != response.body()) {
-                       productlist1.addAll(response.body());
-                       for (int i = 0; i < response.body().size(); i++) {
-                           com.example.coviam.myapp.Model.products.ProductDto existingProductDto = response.body().get(i);
-                           ProductDto productDto = new ProductDto();
-                           if (response.body() == null) {
-                               Toast.makeText(ProductListActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+                public void onResponse(Call<List<SearchDto>> call, Response<List<SearchDto>> response) {
+                    if (null != response.body()) {
+                        productlist1.addAll(response.body());
+                        for (int i = 0; i < response.body().size(); i++) {
+                            SearchDto existingSearchDto = response.body().get(i);
+                            ProductDto productDto = new ProductDto();
+                            if (response.body() == null) {
+                                alertDialog.setTitle("OOps!!");
+                                alertDialog.setMessage("No products available!!");
+                                alertDialog.show();
 
 
                             } else {
-                                productDto.setProductPrice(existingProductDto.getProductPrice());
-                                productDto.setProductImgUrl(existingProductDto.getProductImgUrl());
-                                productDto.setProductName(existingProductDto.getProductName());
-                                productDto.setProductID(existingProductDto.getProductID());
-                                productDto.setMerchantName(existingProductDto.getProductMerchantName());
-                                System.out.println((productDto.toString()));
+                                productDto.setProductPrice(existingSearchDto.getProductPrice());
+                                productDto.setProductImgUrl(existingSearchDto.getProductImgUrl());
+                                productDto.setProductName(existingSearchDto.getProductName());
+                                productDto.setProductID(existingSearchDto.getProductID());
+                                productDto.setMerchantName(existingSearchDto.getProductMerchantName());
                                 productlist.add(productDto);
                             }
                         }
                         productadapter.notifyDataSetChanged();
-                        Toast.makeText(ProductListActivity.this, "Got Products For Searchword", Toast.LENGTH_LONG).show();
+
                     }
                 }
 
                 @Override
-                public void onFailure(Call<List<com.example.coviam.myapp.Model.products.ProductDto>> call, Throwable t) {
-                    Toast.makeText(ProductListActivity.this, "No Products for Searchword ", Toast.LENGTH_LONG).show();
+                public void onFailure(Call<List<SearchDto>> call, Throwable t) {
+                    alertDialog.setTitle("OOps!!");
+                    alertDialog.setMessage("Not able to retrieve products!!");
+                    alertDialog.show();
                 }
-            });
-        } else {
+            });}
+
+        else {
             projectApi = LoginController.getInstance().getProductClient().create(ProjectAPI.class);
 
             Call<List<ProductDto>> userCall = projectApi.getProductsByCid(categoryId);

@@ -18,11 +18,12 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.coviam.myapp.Adapter.MerchantAdapter;
+import com.example.coviam.myapp.Model.product.ProductDto;
+import com.example.coviam.myapp.Model.products.SearchDto;
 import com.example.coviam.myapp.network.LoginController;
 import com.example.coviam.myapp.Model.cart.CartData;
 import com.example.coviam.myapp.Model.cart.CartResponseDTO;
 import com.example.coviam.myapp.Model.merchant.MerchantDto;
-import com.example.coviam.myapp.Model.product.ProductDto;
 import com.example.coviam.myapp.network.ProjectAPI;
 import com.example.coviam.myapp.R;
 
@@ -33,7 +34,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ProductDetailActivity extends AppCompatActivity  {
+public class ProductDetailActivity extends AppCompatActivity {
     //IProductAPI mIProductAPI;
 
     Long productID;
@@ -42,12 +43,14 @@ public class ProductDetailActivity extends AppCompatActivity  {
     Long merchantId;
     Double price;
 
-    ProductDto productDto = new ProductDto();
+    SearchDto productDto = new SearchDto();
     MerchantDto merchantDto;
     ImageView imageView;
     TextView textViewName, textViewPrice, description, merchantName, rating, productPrice, quantity;
     Button cart, buynow;
     RecyclerView recyclerview;
+    MerchantAdapter merchantAdapter;
+    List<MerchantDto> merchantlist;
     EditText quantityEntry;
 
 
@@ -56,19 +59,13 @@ public class ProductDetailActivity extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_product_detail);
         final Intent intent = getIntent();
+        merchantlist = new ArrayList<>();
         this.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN);
         //recyclerview = (RecyclerView) findViewById(R.id.recycler_view1);
         //recyclerview.setLayoutManager(new GridLayoutManager(ProductDetailActivity.this, 1));
-        RelativeLayout productFromOtherMerchants= findViewById(R.id.other_merchant);
+        RelativeLayout productFromOtherMerchants = findViewById(R.id.other_merchant);
         Button addcart = findViewById(R.id.bt_cart);
         Button buynow = findViewById(R.id.bt_buynow);
-
-        productFromOtherMerchants.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //get product from other merchants here
-            }
-        });
 
         final TextView textViewName = findViewById(R.id.name_tag);
         final TextView textViewPrice = findViewById(R.id.price_tag);
@@ -76,7 +73,6 @@ public class ProductDetailActivity extends AppCompatActivity  {
         final ImageView imageView = findViewById(R.id.product_image);
         final TextView merchantName = findViewById(R.id.merchant_name_tag);
         quantityEntry = findViewById(R.id.quantity_tag2);
-
 
 
         //recyclerview.setAdapter(merchantAdapter);
@@ -94,15 +90,22 @@ public class ProductDetailActivity extends AppCompatActivity  {
             public void onResponse(Call<ProductDto> call, Response<ProductDto> response) {
 
 
-                if(response.body()!=null) {
+                if (response.body() != null) {
                     textViewName.setText("Name: " + response.body().getProductName());
                     productDto.setProductID(response.body().getProductID());
+
                     productDto.setProductName(response.body().getProductName());
+
                     textViewPrice.setText("Price: " + response.body().getProductPrice() + "");
+
                     productDto.setProductPrice(response.body().getProductPrice());
+
                     description.setText(response.body().getProductDescription());
+
                     productDto.setMerchantID(response.body().getMerchantID());
+
                     merchantName.setText("Merchant: " + response.body().getMerchantName());
+
                     Glide.with(ProductDetailActivity.this).load(response.body().getProductImgUrl()).into(imageView);
                 }
 
@@ -121,122 +124,52 @@ public class ProductDetailActivity extends AppCompatActivity  {
         });
 
 
+        private void addToCart () {
+            final ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.show();
+
+            SharedPreferences preferences = getSharedPreferences("userData", MODE_PRIVATE);
+            Long userid = preferences.getLong("id", 0);
 
 
+            Long pid = getIntent().getLongExtra("pid", 0L);
+            String quantity = getIntent().getStringExtra("qty");
+            Long mid = getIntent().getLongExtra("mid", 0L);
+            Double price = getIntent().getDoubleExtra("price", 0);
 
-        buynow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = getIntent();
-                intent.putExtra("pid", productID);
-                intent.putExtra("mid", productDto.getMerchantID());
-                System.out.println("QTY" + quantityEntry.getText().toString());
-                intent.putExtra("qty", quantityEntry.getText().toString());
-                intent.putExtra("price", productDto.getProductPrice());
-                projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
-                addToCart();
-
+            Long qty = 0L;
+            if (quantity != null && !quantity.isEmpty()) {
+                qty = Long.parseLong(quantity);
+            } else {
+                qty = 1L;
             }
-        });
 
 
-        addcart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                projectApi = LoginController.getInstance().getClient().create(ProjectAPI.class);
-                addToCart1();
-            }
-        });
+            Call<CartResponseDTO> call = projectApi.addToCartApi(new CartData(userid, pid, qty, mid, price));
+            call.enqueue(new Callback<CartResponseDTO>() {
+                @Override
+                public void onResponse(Call<CartResponseDTO> call, Response<CartResponseDTO> response) {
+                    if (response.body().getSuccess()) {
+                        progressDialog.dismiss();
+                        Intent displayByCategory = new Intent(ProductDetailActivity.this, CartPageActivity.class);
+                        startActivity(displayByCategory);
 
-    }
+                        Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    } else {
+                        progressDialog.dismiss();
+                        Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<CartResponseDTO> call, Throwable t) {
+                    progressDialog.dismiss();
+                }
+            });
 
 
-    private void addToCart() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.show();
-
-        SharedPreferences preferences = getSharedPreferences("userData", MODE_PRIVATE);
-        Long userid = preferences.getLong("id", 0);
-
-
-        Long pid = getIntent().getLongExtra("pid", 0L);
-        String quantity = getIntent().getStringExtra("qty");
-        Long mid = getIntent().getLongExtra("mid", 0L);
-        Double price = getIntent().getDoubleExtra("price", 0);
-
-        Long qty = 0L;
-        if (quantity != null && !quantity.isEmpty()) {
-            qty = Long.parseLong(quantity);
-        } else {
-            qty = 1L;
         }
 
 
-        Call<CartResponseDTO> call = projectApi.addToCartApi(new CartData(userid, pid, qty, mid, price));
-        call.enqueue(new Callback<CartResponseDTO>() {
-            @Override
-            public void onResponse(Call<CartResponseDTO> call, Response<CartResponseDTO> response) {
-                if (response.body().getSuccess()) {
-                    progressDialog.dismiss();
-                    Intent displayByCategory = new Intent(ProductDetailActivity.this, CartPageActivity.class);
-                    startActivity(displayByCategory);
-
-                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
-                } else {
-                    progressDialog.dismiss();
-                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CartResponseDTO> call, Throwable t) {
-                progressDialog.dismiss();
-            }
-        });
-
-
     }
-
-    private void addToCart1() {
-        final ProgressDialog progressDialog = new ProgressDialog(this);
-        progressDialog.show();
-
-        SharedPreferences preferences = getSharedPreferences("userData", MODE_PRIVATE);
-        Long userid = preferences.getLong("id", -1);
-
-
-        String quantity = quantityEntry.getText().toString();
-
-        long qty;
-        if (!quantity.equals("")) {
-            qty = Long.parseLong(quantity);
-        } else {
-            qty = 1;
-        }
-
-
-        Call<CartResponseDTO> call = projectApi.addToCartApi(new CartData(userid, this.productID, qty, this.merchantId, this.price));
-        call.enqueue(new Callback<CartResponseDTO>() {
-            @Override
-            public void onResponse(Call<CartResponseDTO> call, Response<CartResponseDTO> response) {
-                if (response.body().getSuccess()) {
-                    progressDialog.dismiss();
-
-
-                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
-                } else {
-                    progressDialog.dismiss();
-                    Toast.makeText(ProductDetailActivity.this, response.body().getMessage(), Toast.LENGTH_LONG).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<CartResponseDTO> call, Throwable t) {
-                progressDialog.dismiss();
-            }
-        });
-
-    }
-
-
 }

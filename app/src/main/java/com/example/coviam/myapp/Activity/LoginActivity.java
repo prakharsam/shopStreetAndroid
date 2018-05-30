@@ -1,5 +1,6 @@
 package com.example.coviam.myapp.Activity;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
@@ -22,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private ProjectAPI projectApi;
     private EditText userName;
     private EditText password;
+    private AlertDialog alertDialog = new AlertDialog.Builder(LoginActivity.this).create();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
                     userCall.enqueue(new Callback<ResponseFromUser>() {
                         @Override
                         public void onResponse(Call<ResponseFromUser> call, Response<ResponseFromUser> response) {
-                        if(response.body() != null && response.body().isResponse()) {
+                            if (response.body() != null && response.body().isResponse()) {
                                 //edit
                                 SharedPreferences.Editor editor = getSharedPreferences("userData", MODE_PRIVATE).edit();
                                 editor.putLong("id", response.body().getUserId());
@@ -55,17 +57,27 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent displayByCategory = new Intent(LoginActivity.this, DisplayByCategoryActivity.class);
                                 startActivity(displayByCategory);
                             } else {
-                                Toast.makeText(LoginActivity.this, "Username/password is wrong", Toast.LENGTH_SHORT).show();
+
+                                alertDialog.setTitle("OOps!!");
+                                alertDialog.setMessage("password does not match!!");
+                                alertDialog.show();
+
                             }
                         }
 
                         @Override
                         public void onFailure(Call<ResponseFromUser> call, Throwable t) {
-                            Toast.makeText(LoginActivity.this, "Failed to add user into database", Toast.LENGTH_LONG);
+                            alertDialog.setTitle("OOps!!");
+                            alertDialog.setMessage("could'nt sign you in!!");
+                            alertDialog.show();
+
                         }
                     });
                 } else {
-                    Toast.makeText(LoginActivity.this, "Enter UserName", Toast.LENGTH_LONG).show();
+                    alertDialog.setTitle("OOps!!");
+                    alertDialog.setMessage("Something Went wrong with our Server .Try  again!!");
+                    alertDialog.show();
+
                 }
             }
         });

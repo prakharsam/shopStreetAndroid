@@ -100,7 +100,7 @@ public class ProductDto {
         }
         @Override
         public String toString() {
-            return "ProductDto{" +
+            return "SearchDto{" +
                     "productID=" + productID +
                     ", categoryID=" + categoryID +
                     ", productName='" + productName + '\'' +
